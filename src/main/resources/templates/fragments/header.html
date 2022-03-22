@@ -1,13 +1,13 @@
   <div class="container" >
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+       <a th:href="@{/home/}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
           <img th:src="@{/images/logito.png}" style="width: 150px;">
         </a>
       <div style="margin-left: 120px;" >
-        <a th:href="@{/solicitante/login}" class="btn btn-success">
+        <a th:href="@{/home/login}" class="btn btn-success">
 							<ion-icon name="pencil"></ion-icon>&nbsp;Iniciar sesión
 						</a>
-        <a th:href="@{/solicitante/crear}" class="btn btn-primary">
+        <a th:href="@{/home/crear}" class="btn btn-primary">
 							<ion-icon name="pencil"></ion-icon>&nbsp;Registrate
 						</a>
       </div>

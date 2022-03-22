@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping(value = "/solicitante")
+@RequestMapping(value = "/home")
 public class SolicitanteController {
 	
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String iniciar() {
 		return "home";
 	}
 	
 	@GetMapping("/crear")
-	public String crearMascota() {
+	public String registrarSolicitante() {
 		return "solicitante/formSolicitante";
 	}
 	
@@ -24,5 +24,8 @@ public class SolicitanteController {
 		return "login";
 	}
 	
-
+	@GetMapping("/usuarios")
+	public String gestionarUsuarios() {
+		return "administrador/listUsuarios";
+	}
 }
