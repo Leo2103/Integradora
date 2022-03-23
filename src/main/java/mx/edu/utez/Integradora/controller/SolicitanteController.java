@@ -6,26 +6,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping(value = "/home")
+@RequestMapping(value = "/solicitante")
 public class SolicitanteController {
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String iniciar() {
-		return "home";
+		return "solicitante/homeSolicitante";
 	}
 	
-	@GetMapping("/crear")
-	public String registrarSolicitante() {
-		return "solicitante/formSolicitante";
+	@GetMapping("/listCitas")
+	public String listarCitas() {
+		return "solicitante/listCitas";
 	}
 	
-	@GetMapping("/login")
-	public String iniciarSesion() {
-		return "login";
+	@GetMapping("/agendar1")
+	public String agendar1() {
+		return "solicitante/agendar1";
 	}
 	
-	@GetMapping("/usuarios")
-	public String gestionarUsuarios() {
-		return "administrador/listUsuarios";
+	@GetMapping("/agendar2")
+	public String agendar2() {
+		return "solicitante/agendar2";
 	}
+	@GetMapping("/agendar3")
+	public String agendar3() {
+		return "solicitante/agendar3";
+	}
+	
 }
