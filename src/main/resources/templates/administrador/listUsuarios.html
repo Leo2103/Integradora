@@ -10,9 +10,10 @@
 </head>
 
 <body>
-	<div class="container-fluid" style="text-align: center;">
+	<div class="container-fluid" >
 		<div th:insert="/fragments/headerAdmin.html "></div>
-		<div class="row">
+		<a class="btn btn-primary" th:href="@{/admin/formUsuario}">Añadir usuario</a>
+		<div class="row" style="text-align: center;">
 			<div class="col-12">
 				<div class="card mt-3">
 					<div class="card-body">
@@ -54,7 +55,7 @@
 										</a>
 									</td>
 									<td>
-										<a href="" class="btn btn-warning">
+										<a th:href="@{/admin/updateUsuario}" class="btn btn-warning">
 											<ion-icon name="create"></ion-icon>
 										</a>
 									</td>

@@ -24,4 +24,12 @@ public class AdminController {
     public String crearServicio(){
         return "administrador/formServicio";
     }
+    @GetMapping("/formUsuario")
+    public String crearUsuario(){
+        return "administrador/formUsuario";
+    }
+    @GetMapping("/updateUsuario")
+    public String actualizarUsuario(){
+        return "administrador/updateUsuario";
+    }
 }
