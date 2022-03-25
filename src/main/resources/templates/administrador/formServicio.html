@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de servicios</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid">
+    <div th:insert="/fragments/headerAdmin.html "></div>
+
+    <div class="row" style="display: flex">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="card m-3">
+                <div class="card-body">
+                    <h2 class="mb-3" style="align-content: center">Registrar Servicio </h2>
+                    <form action="" method="POST">
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <!--Colocar aquí el id de manera oculta-->
+                                <input hidden>
+                                <label>Nombre del tramite:</label>
+                                <input class="form-control form-control-lg" type="text"
+                                       placeholder="Ingresa el nombre del servicio">
+                            </div>
+
+                            <div class="form-group col">
+                                <label>Costo</label>
+                                <input class="form-control form-control-lg" type="text"
+                                       placeholder="Ingresa el costo del servicio">
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label>Descripción</label>
+                                <input class="form-control form-control-lg" type="text"
+                                       placeholder="Ingresa la descripción del servicio">
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label>Documentos requeridos</label>
+                                <textarea class="form-control" rows="3"
+                                          placeholder="Ingresa los documentos requeridos para el servicio"></textarea>
+                            </div>
+
+                        </div>
+                        <center>
+                            <div class="form-row col-9">
+                                <a type="button" th:href="@{/admin/consultarServicios}"
+                                   class="btn btn-secondary col m-3">Cancelar</a>
+                                <button type="submit" class="btn btn-primary col m-3">Registrar servicio</button>
+                            </div>
+                        </center>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+
+    </div>
+</div>
+</body>
+</html>

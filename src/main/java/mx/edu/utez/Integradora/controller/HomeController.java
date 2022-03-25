@@ -12,7 +12,7 @@ public class HomeController {
 	public String iniciar() {
 		return "home";
 	}
-	
+	//este lo veo mas a nivel de home es decir mover la vista a un nivel general
 	@GetMapping("/crear")
 	public String registrarSolicitante() {
 		return "solicitante/formSolicitante";
@@ -23,8 +23,5 @@ public class HomeController {
 		return "login";
 	}
 	
-	@GetMapping("/usuarios")
-	public String gestionarUsuarios() {
-		return "administrador/listUsuarios";
-	}
+
 }
