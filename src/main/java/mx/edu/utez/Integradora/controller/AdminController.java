@@ -32,4 +32,12 @@ public class AdminController {
     public String actualizarUsuario(){
         return "administrador/updateUsuario";
     }
+    @GetMapping("/panelAdm")
+	public String panelAdmin() {
+		return "administrador/panelAdministrador";
+	}
+	@GetMapping("/gestionHora")
+	public String gestionHorario() {
+		return "administrador/gestionarHorario";
+	}
 }
