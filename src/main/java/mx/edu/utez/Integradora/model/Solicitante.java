@@ -15,124 +15,114 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "solicitante")
 public class Solicitante {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@NotBlank(message= "Campo obligatorio")
-	@Pattern(regexp="[a-zA-Z ]{2,254}")
-	@Size(min=2, max=20)
-	@Column(nullable = false, length = 20)
-	private String nombre;
-	
-	@NotBlank(message= "Campo obligatorio")
-	@Pattern(regexp="[a-zA-Z ]{2,254}")
-	@Size(min=2, max=20)
-	@Column(nullable = false, length = 40)
-	private String apellidos;
-	
-	@NotBlank(message= "Campo obligatorio")
-	@Pattern(regexp="[a-zA-Z ]{2,254}")
-	@Size(min=2, max=30)
-	@Column(nullable = false, length = 30)
-	private String matricula;
-	
-	@NotBlank(message= "Campo obligatorio")
-	@Pattern(regexp="[a-zA-Z ]{2,254}")
-	@Size(min=2, max=15)
-	@Column(nullable = false, length = 15)
-	private String carrera;
-	
-	@NotBlank(message= "Campo obligatorio")
-	@Pattern(regexp="[a-zA-Z ]{2,254}")
-	@Size(min=2, max=50)
-	@Column(nullable = false, length = 40)
-	@Email
-	private String correo;
-	
-	@NotNull(message= "Campo obligatorio")
-	@Column(nullable = false, length = 10)
-	private Integer numero;
 
-	
-	
-	public Solicitante(Long id, @NotBlank @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String nombre,
-			@NotBlank @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String apellidos,
-			@NotBlank @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 30) String matricula,
-			@NotBlank @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 15) String carrera,
-			@NotBlank @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 50) @Email String correo,
-			@NotNull(message = "Campo obligatorio") Integer numero) {
-		this.id = id;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.matricula = matricula;
-		this.carrera = carrera;
-		this.correo = correo;
-		this.numero = numero;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Solicitante() {
-	}
+    @NotBlank(message = "Campo obligatorio")
+    @Pattern(regexp = "[a-zA-Z ]{2,254}")
+    @Size(min = 2, max = 20)
+    @Column(nullable = false, length = 20)
+    private String nombre;
 
-	public Long getId() {
-		return id;
-	}
+    @NotBlank(message = "Campo obligatorio")
+    @Pattern(regexp = "[a-zA-Z ]{2,254}")
+    @Size(min = 2, max = 20)
+    @Column(nullable = false, length = 40)
+    private String apellidos;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @NotBlank(message = "Campo obligatorio")
+    @Pattern(regexp = "[a-zA-Z ]{2,254}")
+    @Size(min = 2, max = 30)
+    @Column(nullable = false, length = 30)
+    private String matricula;
 
-	public String getNombre() {
-		return nombre;
-	}
+    @NotBlank(message = "Campo obligatorio")
+    @Pattern(regexp = "[a-zA-Z ]{2,254}")
+    @Size(min = 2, max = 15)
+    @Column(nullable = false, length = 15)
+    private String carrera;
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    @NotBlank(message = "Campo obligatorio")
+    @Pattern(regexp = "[a-zA-Z ]{2,254}")
+    @Size(min = 2, max = 50)
+    @Column(nullable = false, length = 40)
+    @Email
+    private String correo;
 
-	public String getApellidos() {
-		return apellidos;
-	}
+    @NotNull(message = "Campo obligatorio")
+    @Column(nullable = false, length = 10)
+    private Integer numero;
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
 
-	public String getMatricula() {
-		return matricula;
-	}
+    public Solicitante(@NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String nombre, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String apellidos, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 30) String matricula, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 15) String carrera, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 50) @Email String correo, @NotNull(message = "Campo obligatorio") Integer numero) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.matricula = matricula;
+        this.carrera = carrera;
+        this.correo = correo;
+        this.numero = numero;
+    }
 
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
+    public Solicitante() {
+    }
 
-	public String getCarrera() {
-		return carrera;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setCarrera(String carrera) {
-		this.carrera = carrera;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getCorreo() {
-		return correo;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public Integer getNumero() {
-		return numero;
-	}
+    public String getApellidos() {
+        return apellidos;
+    }
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-	
-	
-	
- 
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
 
 }

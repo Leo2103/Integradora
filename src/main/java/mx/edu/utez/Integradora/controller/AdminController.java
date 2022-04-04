@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(value = "/admin")
 public class AdminController {
+
     @GetMapping("/home")
     public String home(){
         return "administrador/AdminHome";
@@ -15,7 +16,6 @@ public class AdminController {
     public String gestionarUsuarios() {
         return "administrador/listUsuarios";
     }
-
     @GetMapping("/consultarServicios")
     public String gestionarServicios(){
         return "administrador/listServicio";
@@ -28,10 +28,14 @@ public class AdminController {
     public String crearUsuario(){
         return "administrador/formUsuario";
     }
-    @GetMapping("/updateUsuario")
-    public String actualizarUsuario(){
-        return "administrador/updateUsuario";
-    }
+    /*@PostMapping("/guardar")
+    public String guadarServicio(Servicio servicio, Model model, RedirectAttributes attributes){
+        if(servicio.getId()!=null){
+            Servicio servicioExistente= servicioService.buscarServicio(servicio.getId());
+        }
+        servicioService.guardarServicio(servicio);
+        return "redirect:/admin/consultarTodos";
+    }*/
     @GetMapping("/panelAdm")
 	public String panelAdmin() {
 		return "administrador/panelAdministrador";
