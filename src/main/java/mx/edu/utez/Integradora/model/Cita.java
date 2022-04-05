@@ -8,10 +8,10 @@ public class Cita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private Time hora;
-    /*
     @ManyToOne
     @JoinColumn(name = "idServicio", nullable = false)
-    private Servicio servicio;*/
+    private Servicio servicio;
+    //
     @ManyToOne
     @JoinColumn(name = "idSolicitante", nullable = false)
     private Solicitante solicitante;
@@ -20,7 +20,7 @@ public class Cita {
     private HorarioCita horarioCita;
     private String documentosAnexos;
     private int pago;
-/*
+
     public Cita(Time hora, Servicio servicio, Solicitante solicitante, HorarioCita horarioCita, String documentosAnexos, int pago) {
         this.hora = hora;
         this.servicio = servicio;
@@ -29,7 +29,7 @@ public class Cita {
         this.documentosAnexos = documentosAnexos;
         this.pago = pago;
     }
-*/
+
     public Cita() {
     }
 
@@ -48,15 +48,16 @@ public class Cita {
     public void setHora(Time hora) {
         this.hora = hora;
     }
-/*
-    public Servicio getServicio() {
-        return servicio;
-    }
 
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-*/
+    /*
+        public Servicio getServicio() {
+            return servicio;
+        }
+
+        public void setServicio(Servicio servicio) {
+            this.servicio = servicio;
+        }
+    */
     public Solicitante getSolicitante() {
         return solicitante;
     }

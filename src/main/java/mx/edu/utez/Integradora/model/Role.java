@@ -12,9 +12,7 @@ public class Role {
     @Column(nullable = false, length = 45, unique = true)
     private String authority;
 
-    public Role() {
-
-    }
+    public Role() {}
 
     public Long getId() {
         return id;

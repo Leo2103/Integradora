@@ -1,11 +1,6 @@
 package mx.edu.utez.Integradora.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -51,18 +46,19 @@ public class Solicitante {
     @Email
     private String correo;
 
-    @NotNull(message = "Campo obligatorio")
-    @Column(nullable = false, length = 10)
-    private Integer numero;
+    @OneToMany
+    @JoinColumn(name = "idUser", nullable = false)
+    private User user;
 
 
-    public Solicitante(@NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String nombre, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 20) String apellidos, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 30) String matricula, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 15) String carrera, @NotBlank(message = "Campo obligatorio") @Pattern(regexp = "[a-zA-Z ]{2,254}") @Size(min = 2, max = 50) @Email String correo, @NotNull(message = "Campo obligatorio") Integer numero) {
+
+    public Solicitante(String nombre, String apellidos, String matricula, String carrera,String correo,  User user) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.matricula = matricula;
         this.carrera = carrera;
         this.correo = correo;
-        this.numero = numero;
+        this.user=user;
     }
 
     public Solicitante() {
@@ -116,13 +112,11 @@ public class Solicitante {
         this.correo = correo;
     }
 
-    public Integer getNumero() {
-        return numero;
+    public User getUser() {
+        return user;
     }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-
 }
