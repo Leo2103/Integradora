@@ -1,34 +1,29 @@
 package mx.edu.utez.Integradora.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
-@Table(name="horarioVentanilla")
+@Entity
+@Table(name = "horarioVentanilla")
 public class HorarioCita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Future
-    private Date fecha;
+    private long idHorarioVentanilla;
+    private java.sql.Date fecha;
     private Time horaInicio;
     private Time horaFin;
-    @Min(value = 0)
     private int repeticiones;
-    @Min(value = 0)
-    @Max(value = 10)
     private int numVentanilla;
 
-    public HorarioCita() {
+    public HorarioCita(){
+
     }
 
-    public HorarioCita(Date fecha, Time horaInicio, Time horaFin, int repeticiones, int numVentanilla) {
+    public HorarioCita(java.sql.Date fecha, Time horaInicio, Time horaFin, int repeticiones, int numVentanilla) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -36,15 +31,15 @@ public class HorarioCita {
         this.numVentanilla = numVentanilla;
     }
 
-    public long getId() {
-        return id;
+    public long getIdHorarioVentanilla() {
+        return idHorarioVentanilla;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdHorarioVentanilla(long idHorarioVentanilla) {
+        this.idHorarioVentanilla = idHorarioVentanilla;
     }
 
-    public Date getFecha() {
+    public java.sql.Date getFecha() {
         return fecha;
     }
 

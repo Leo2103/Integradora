@@ -28,19 +28,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Trámite de seguro</td>
-                            <td>Para vehiculos</td>
-                            <td>Ine</td>
-                            <td>1500</td>
+                        <tr th:each="tmpServicio: ${listaServicios}">
+                            <th scope="row">[[${tmpServicio.id}]]</th>
+                            <td>[[${tmpServicio.nombre}]]</td>
+                            <td>[[${tmpServicio.descripcion}]]</td>
+                            <td>[[${tmpServicio.documentosRequeridos}]]</td>
+                            <td>[[${tmpServicio.costo}]]</td>
                             <td>
-                                <a class="btn btn-info">
+                                <a  class="btn btn-info">
                                     <ion-icon name="eye"></ion-icon>
                                 </a>
                             </td>
                             <td>
-                                <a href="" class="btn btn-warning">
+                                <a   class="btn btn-warning">
                                     <ion-icon name="create"></ion-icon>
                                 </a>
                             </td>
@@ -52,6 +52,23 @@
                         </tr>
                         </tbody>
                     </table>
+                    <nav th:if="${listaServicios.totalPages > 0}" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${listaServicios.number == 0 ? 'disabled' : ''}">
+                                <a th:href="@{/admin/consultarServicios(page=${listaServicios.number - 1})}" class="page-link">Anterior</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${i eq listaServicios.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, listaServicios.totalPages, 1)}">
+                                <a class="page-link" th:href="@{/admin/consultarServicios?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}"
+                                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${listaServicios.number == (listaServicios.totalPages - 1) ? 'disabled' : ''}">
+                                <a th:href="@{/admin/consultarServicios(page=${listaServicios.number + 1})}" class="page-link">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

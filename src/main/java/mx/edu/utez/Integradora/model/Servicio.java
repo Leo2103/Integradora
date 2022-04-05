@@ -1,11 +1,9 @@
 package mx.edu.utez.Integradora.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import javax.persistence.*;
+@Entity
+@Table(name = "servicio")
 public class Servicio {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -13,13 +11,9 @@ public class Servicio {
     private String descripcion;
     private String documentosRequeridos;
     private double costo;
+
     public Servicio(){}
-    public Servicio(String nombre, String descripcion, String documentosRequeridos, double costo) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.documentosRequeridos = documentosRequeridos;
-        this.costo = costo;
-    }
+
 
     public long getId() {
         return id;

@@ -2,23 +2,26 @@ package mx.edu.utez.Integradora.model;
 
 import javax.persistence.*;
 import java.util.Set;
+@Entity
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false, length = 45)
     private String nombre;
-    private String apellido;
+    @Column(nullable = false, length = 45)
+    private String apellidos;
+    @Column(nullable = false, length = 45, unique = true)
     private String correo;
     private String contrasenia;
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "user"), inverseJoinColumns = @JoinColumn(name = "role"))
-    private Set<Role> roles;
-    public User(){
+
+    public User() {
     }
-    public User(String nombre, String apellido, String correo, String contrasenia) {
+
+    public User(String nombre, String apellidos, String correo, String contrasenia) {
         this.nombre = nombre;
-        this.apellido = apellido;
+        this.apellidos = apellidos;
         this.correo = correo;
         this.contrasenia = contrasenia;
     }
@@ -39,12 +42,12 @@ public class User {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getCorreo() {

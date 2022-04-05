@@ -1,44 +1,40 @@
 package mx.edu.utez.Integradora.model;
 
 import javax.persistence.*;
-import java.sql.Time;
-
+import java.sql.Time;@Entity
+@Table(name = "cita")
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long idcita;
     private Time hora;
     @ManyToOne
-    @JoinColumn(name = "idServicio", nullable = false)
+    @JoinColumn(name = "idHorarioVentanilla")
+    private HorarioCita ventanilla;
+    @ManyToOne
+    @JoinColumn(name = "idServicio")
     private Servicio servicio;
-    //
-    @ManyToOne
-    @JoinColumn(name = "idSolicitante", nullable = false)
-    private Solicitante solicitante;
-    @ManyToOne
-    @JoinColumn(name = "idHorarioVentanilla", nullable = false)
-    private HorarioCita horarioCita;
-    private String documentosAnexos;
+    private String documentoAnexos;
     private int pago;
-
-    public Cita(Time hora, Servicio servicio, Solicitante solicitante, HorarioCita horarioCita, String documentosAnexos, int pago) {
+    @ManyToOne
+    @JoinColumn(name = "idSolicitante")
+    private Solicitante solicitante;
+    public Cita(){}
+    public Cita(Time hora, HorarioCita ventanilla, Servicio servicio, String documentoAnexos, int pago, Solicitante solicitante) {
         this.hora = hora;
+        this.ventanilla = ventanilla;
         this.servicio = servicio;
-        this.solicitante = solicitante;
-        this.horarioCita = horarioCita;
-        this.documentosAnexos = documentosAnexos;
+        this.documentoAnexos = documentoAnexos;
         this.pago = pago;
+        this.solicitante = solicitante;
     }
 
-    public Cita() {
+    public long getIdcita() {
+        return idcita;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setIdcita(long idcita) {
+        this.idcita = idcita;
     }
 
     public Time getHora() {
@@ -49,37 +45,28 @@ public class Cita {
         this.hora = hora;
     }
 
-    /*
-        public Servicio getServicio() {
-            return servicio;
-        }
-
-        public void setServicio(Servicio servicio) {
-            this.servicio = servicio;
-        }
-    */
-    public Solicitante getSolicitante() {
-        return solicitante;
+    public HorarioCita getVentanilla() {
+        return ventanilla;
     }
 
-    public void setSolicitante(Solicitante solicitante) {
-        this.solicitante = solicitante;
+    public void setVentanilla(HorarioCita ventanilla) {
+        this.ventanilla = ventanilla;
     }
 
-    public HorarioCita getHorarioCita() {
-        return horarioCita;
+    public Servicio getServicio() {
+        return servicio;
     }
 
-    public void setHorarioCita(HorarioCita horarioCita) {
-        this.horarioCita = horarioCita;
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
     }
 
-    public String getDocumentosAnexos() {
-        return documentosAnexos;
+    public String getDocumentoAnexos() {
+        return documentoAnexos;
     }
 
-    public void setDocumentosAnexos(String documentosAnexos) {
-        this.documentosAnexos = documentosAnexos;
+    public void setDocumentoAnexos(String documentoAnexos) {
+        this.documentoAnexos = documentoAnexos;
     }
 
     public int getPago() {
@@ -88,5 +75,13 @@ public class Cita {
 
     public void setPago(int pago) {
         this.pago = pago;
+    }
+
+    public Solicitante getSolicitante() {
+        return solicitante;
+    }
+
+    public void setSolicitante(Solicitante solicitante) {
+        this.solicitante = solicitante;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Registro de servicios</title>
@@ -16,20 +16,20 @@
             <div class="card m-3">
                 <div class="card-body">
                     <h2 class="mb-3" style="align-content: center">Registrar Servicio </h2>
-                    <form action="" method="POST">
+                    <form th:action="@{/admin/guardar}" method="POST" th:object="${servicio}">
                         <div class="form-row">
                             <div class="form-group col">
                                 <!--Colocar aquí el id de manera oculta-->
-                                <input hidden>
+                                <input hidden th:field="*{id}">
                                 <label>Nombre del tramite:</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa el nombre del servicio">
+                                       placeholder="Ingresa el nombre del servicio" th:field="*{nombre}">
                             </div>
 
                             <div class="form-group col">
                                 <label>Costo</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa el costo del servicio">
+                                       placeholder="Ingresa el costo del servicio" th:field="*{costo}">
                             </div>
 
                         </div>
@@ -38,7 +38,7 @@
                             <div class="form-group col-12">
                                 <label>Descripción</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa la descripción del servicio">
+                                       placeholder="Ingresa la descripción del servicio" th:field="*{descripcion}">
                             </div>
 
                         </div>
@@ -47,14 +47,13 @@
                             <div class="form-group col-12">
                                 <label>Documentos requeridos</label>
                                 <textarea class="form-control" rows="3"
-                                          placeholder="Ingresa los documentos requeridos para el servicio"></textarea>
+                                          placeholder="Ingresa los documentos requeridos para el servicio" th:field="*{documentosRequeridos}"></textarea>
                             </div>
 
                         </div>
                         <center>
                             <div class="form-row col-9">
-                                <a type="button" th:href="@{/admin/consultarServicios}"
-                                   class="btn btn-secondary col m-3">Cancelar</a>
+
                                 <button type="submit" class="btn btn-primary col m-3">Registrar servicio</button>
                             </div>
                         </center>
