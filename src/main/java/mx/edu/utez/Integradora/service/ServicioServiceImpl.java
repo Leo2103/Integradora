@@ -1,8 +1,7 @@
-package mx.edu.utez.Integradora.service.impl;
+package mx.edu.utez.Integradora.service;
 
 import mx.edu.utez.Integradora.model.Servicio;
 import mx.edu.utez.Integradora.repository.ServicioRepository;
-import mx.edu.utez.Integradora.service.ServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,7 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Autowired
     ServicioRepository repository;
+    
     @Override
     public List<Servicio> listarTodos() {
         return repository.findAll();
@@ -46,5 +46,15 @@ public class ServicioServiceImpl implements ServicioService {
     public Page<Servicio> listarPaginacion(Pageable page) {
         return repository.findAll(page);
     }
+
+    @Override
+	public Servicio mostrar(long id){
+		Optional<Servicio> obj = repository.findById(id);
+        if(obj.isPresent()){
+            return obj.get();
+        }
+            return null;
+	}
+	
 
 }

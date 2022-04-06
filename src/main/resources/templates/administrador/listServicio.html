@@ -1,78 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Gestionar Servicios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<title>Gestionar Servicios</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+
 <body>
-<div class="container-fluid">
-    <div th:insert="/fragments/headerAdmin.html "></div>
+	<div class="container-fluid">
+		<div th:insert="/fragments/headerAdmin.html "></div>
 
-    <a class="btn btn-primary" th:href="@{/admin/formServicio}">Añadir servicio</a>
-    <div class="row" style="text-align: center">
-        <div class="col-12">
-            <div class="card mt-3">
-                <div class="card-body">
+		<a class="btn btn-primary" th:href="@{/admin/formServicio}">Añadir servicio</a>
+		<div class="row" style="text-align: center">
+			<div class="col-12">
+				<div class="card mt-3">
+					<div class="card-body">
 
-                    <table class="table">
-                        <thead style="background-color: #008B8B;">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Nombre del servicio</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Documentos requeridos</th>
-                            <th scope="col">Costo</th>
-                            <th colspan="3">Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="tmpServicio: ${listaServicios}">
-                            <th scope="row">[[${tmpServicio.id}]]</th>
-                            <td>[[${tmpServicio.nombre}]]</td>
-                            <td>[[${tmpServicio.descripcion}]]</td>
-                            <td>[[${tmpServicio.documentosRequeridos}]]</td>
-                            <td>[[${tmpServicio.costo}]]</td>
-                            <td>
-                                <a  class="btn btn-info">
-                                    <ion-icon name="eye"></ion-icon>
-                                </a>
-                            </td>
-                            <td>
-                                <a   class="btn btn-warning">
-                                    <ion-icon name="create"></ion-icon>
-                                </a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger">
-                                    <ion-icon name="trash"></ion-icon>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <nav th:if="${listaServicios.totalPages > 0}" aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item" th:classappend="${listaServicios.number == 0 ? 'disabled' : ''}">
-                                <a th:href="@{/admin/consultarServicios(page=${listaServicios.number - 1})}" class="page-link">Anterior</a>
-                            </li>
+						<table class="table">
+							<thead style="background-color: #008B8B;">
+								<tr>
+									<th scope="col">Id</th>
+									<th scope="col">Nombre del servicio</th>
+									<th scope="col">Descripción</th>
+									<th scope="col">Documentos requeridos</th>
+									<th scope="col">Costo</th>
+									<th colspan="3">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tmpServicio: ${listaServicios}">
+									<th scope="row">[[${tmpServicio.id}]]</th>
+									<td>[[${tmpServicio.nombre}]]</td>
+									<td>[[${tmpServicio.descripcion}]]</td>
+									<td>[[${tmpServicio.documentosRequeridos}]]</td>
+									<td>[[${tmpServicio.costo}]]</td>
+									<td>
+										<a th:href="@{/admin/mostrar/{id}(id=${tmpServicio.id})}" class="btn btn-info">
+											<ion-icon name="eye"></ion-icon>
+										</a>
+									</td>
+									<td>
+										<a th:href="@{/admin/editar/{id}(id=${tmpServicio.id})}" class="btn btn-warning" >
+											<ion-icon name="create"></ion-icon>
+										</a>
+									</td>
+									<td>
+										<a th:href="@{/admin/eliminar/{id}(id=${tmpServicio.id})}" class="btn btn-danger">
+											<ion-icon name="trash"></ion-icon>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<nav th:if="${listaServicios.totalPages > 0}" aria-label="Page navigation example">
+							<ul class="pagination justify-content-center">
+								<li class="page-item" th:classappend="${listaServicios.number == 0 ? 'disabled' : ''}">
+									<a th:href="@{/admin/consultarServicios(page=${listaServicios.number - 1})}"
+										class="page-link">Anterior</a>
+								</li>
 
-                            <li class="page-item" th:classappend="${i eq listaServicios.number + 1} ? 'active'"
-                                th:each="i : ${#numbers.sequence( 1, listaServicios.totalPages, 1)}">
-                                <a class="page-link" th:href="@{/admin/consultarServicios?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}"
-                                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
-                            </li>
-                            <li class="page-item"
-                                th:classappend="${listaServicios.number == (listaServicios.totalPages - 1) ? 'disabled' : ''}">
-                                <a th:href="@{/admin/consultarServicios(page=${listaServicios.number + 1})}" class="page-link">Siguiente</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+								<li class="page-item" th:classappend="${i eq listaServicios.number + 1} ? 'active'"
+									th:each="i : ${#numbers.sequence( 1, listaServicios.totalPages, 1)}">
+									<a class="page-link"
+										th:href="@{/admin/consultarServicios?page={tmpPag} (tmpPag=${i-1}) }"
+										th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+								</li>
+								<li class="page-item"
+									th:classappend="${listaServicios.number == (listaServicios.totalPages - 1) ? 'disabled' : ''}">
+									<a th:href="@{/admin/consultarServicios(page=${listaServicios.number + 1})}"
+										class="page-link">Siguiente</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
+
 </html>
