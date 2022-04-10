@@ -7,10 +7,9 @@
     <title>Inicia sesión</title>
 
 
-
-
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <style>
         .bd-placeholder-img {
@@ -30,32 +29,33 @@
 
 </head>
 <body class="text-center">
-<br>
 
-<main class="col-6" style="margin-left: 400px;">
-    <form th:action="@{/login}" method="post">
-        <img class="mb-4" th:src="@{/images/logito.png}" style="width: 200px;">
-        <h1 class="h3 mb-3 fw-normal">Inicio de sesión</h1>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8 card mt-3  shadow p-3 mb-5 bg-white rounded ">
+        <img class="mb-4" th:src="@{/images/logito.png}" width="200px" alt="">
+        <div class=" card-body">
+            <form th:action="@{/login}" method="post">
+                <h1 class="h3 mb-3 fw-normal my-auto text-center">Inicio de sesión</h1>
 
-        <div class="form-floating">
-            <input type="email" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+                <div class="form-floating mb-3">
+                    <label>Correo electrónico:</label>
+                    <input type="email" class="form-control" name="username"
+                           placeholder="name@example.com">
+                </div>
+                <div class="form-floating">
+                    <label>Contraseña:</label>
+                    <input type="password" class="form-control" name="password"
+                           placeholder="password">
+                </div>
+
+                <button class="btn btn-lg btn-primary mt-3 mb-3" type="submit">Iniciar sesión</button>
+            </form>
         </div>
-        <br>
-        <div class="form-floating">
-            <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar sesión</button>
-    </form>
-</main>
-
+    </div>
+    <div class="col-2"></div>
+</div>
 
 
 </body>

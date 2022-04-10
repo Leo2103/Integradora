@@ -2,87 +2,71 @@
 <html>
 
 <head>
-	<title></title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<!--Toast-->
-	<link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Toast-->
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}"/>
 </head>
 
 <body>
-	<div class="container-fluid" >
-		<div th:insert="/fragments/headerAdmin.html "></div>
-		<a class="btn btn-primary" th:href="@{/admin/formUsuario}">Añadir usuario</a>
-		<div class="row" style="text-align: center;">
-			<div class="col-12">
-				<div class="card mt-3">
-					<div class="card-body">
-					
-						<table class="table">
-							<thead style="background-color: #008B8B;">
-								<tr>
-									<th scope="col">Id</th>
-									<th scope="col">Nombre</th>
-									<th scope="col">Apellidos</th>
-									<th scope="col">Matrícula</th>
-									<th scope="col">Carrera</th>
-									<th scope="col">Correo</th>
-									<th scope="col">Teléfono</th>
-									<th scope="col">Estado</th>
-									<th colspan="3">Acciones</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Andrés Leonardo</td>
-									<td>Vázquez Oviedo</td>
-									<td>20183TI121</td>
-									<td>IDyGS</td>
-									<td>20183ti121@utez.edu.mx</td>
-									<td>7771234567</td>
-									<td>
-										<div>
-											<div>
-												<small class="text-muted"><span
-														class="badge badge-pill badge-success">Activo</span></small>
-											</div>
-										</div>
-									</td>
-									<td>
-										<a class="btn btn-info">
-											<ion-icon name="eye"></ion-icon>
-										</a>
-									</td>
-									<td>
-										<a th:href="@{/admin/updateUsuario}" class="btn btn-warning">
-											<ion-icon name="create"></ion-icon>
-										</a>
-									</td>
-									<td>
-										<a class="btn btn-danger">
-											<ion-icon name="trash"></ion-icon>
-										</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-		crossorigin="anonymous"></script>
+<div class="container-fluid">
+    <div th:insert="/fragments/headerAdmin.html "></div>
+    <div class="container">
+        <a class="btn btn-primary" th:href="@{/admin/formUsuario}">Añadir usuario</a>
+        <div class="row" style="text-align: center;">
+            <div class="col-12">
+                <div class="card mt-3">
+                    <div class="card-body">
+
+                        <table class="table">
+                            <thead style="background-color: #008B8B;">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Estado</th>
+                                <th colspan="3">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tmpUser: ${listaUsuarios}">
+                                <th scope="row">[[${tmpUser.id}]]</th>
+                                <td>[[${tmpUser.nombre}]]</td>
+                                <td>[[${tmpUser.apellidos}]]</td>
+                                <td th:text="${tmpUser.rol[0].authority}"></td>
+                                <td th:text="${tmpUser.enabled == true} ? 'Habilitado' : 'Inhabilitado'"></td>
+                                <td>
+                                    <a th:href="@{/admin/updateUsuario}" class="btn btn-warning">
+                                        <ion-icon name="create"></ion-icon>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger">
+                                        <ion-icon name="trash"></ion-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
