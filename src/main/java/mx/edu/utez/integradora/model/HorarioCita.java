@@ -1,19 +1,22 @@
 package mx.edu.utez.integradora.model;
 
+
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.sql.Date;
 import java.sql.Time;
 
 @Entity
 @Table(name = "horarioVentanilla")
-public class HorarioCita implements Serializable {
+public class HorarioCita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idHorarioVentanilla;
-    private java.sql.Date fecha;
-    private Time horaInicio;
-    private Time horaFin;
+    private String fecha;
+    private String horaInicio;
+    private String horaFin;
     private int repeticiones;
     private int numVentanilla;
 
@@ -21,59 +24,71 @@ public class HorarioCita implements Serializable {
 
     }
 
-    public HorarioCita(java.sql.Date fecha, Time horaInicio, Time horaFin, int repeticiones, int numVentanilla) {
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.repeticiones = repeticiones;
-        this.numVentanilla = numVentanilla;
-    }
+	@Override
+	public String toString() {
+		return "HorarioCita [idHorarioVentanilla=" + idHorarioVentanilla + ", fecha=" + fecha + ", horaInicio="
+				+ horaInicio + ", horaFin=" + horaFin + ", repeticiones=" + repeticiones + ", numVentanilla="
+				+ numVentanilla + "]";
+	}
 
-    public long getIdHorarioVentanilla() {
-        return idHorarioVentanilla;
-    }
+	public HorarioCita(long idHorarioVentanilla, String fecha, String horaInicio, String horaFin, int repeticiones,
+			int numVentanilla) {
+		super();
+		this.idHorarioVentanilla = idHorarioVentanilla;
+		this.fecha = fecha;
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
+		this.repeticiones = repeticiones;
+		this.numVentanilla = numVentanilla;
+	}
 
-    public void setIdHorarioVentanilla(long idHorarioVentanilla) {
-        this.idHorarioVentanilla = idHorarioVentanilla;
-    }
+	public long getIdHorarioVentanilla() {
+		return idHorarioVentanilla;
+	}
 
-    public java.sql.Date getFecha() {
-        return fecha;
-    }
+	public void setIdHorarioVentanilla(long idHorarioVentanilla) {
+		this.idHorarioVentanilla = idHorarioVentanilla;
+	}
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
+	public String getFecha() {
+		return fecha;
+	}
 
-    public Time getHoraInicio() {
-        return horaInicio;
-    }
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
 
-    public void setHoraInicio(Time horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+	public String getHoraInicio() {
+		return horaInicio;
+	}
 
-    public Time getHoraFin() {
-        return horaFin;
-    }
+	public void setHoraInicio(String horaInicio) {
+		this.horaInicio = horaInicio;
+	}
 
-    public void setHoraFin(Time horaFin) {
-        this.horaFin = horaFin;
-    }
+	public String getHoraFin() {
+		return horaFin;
+	}
 
-    public int getRepeticiones() {
-        return repeticiones;
-    }
+	public void setHoraFin(String horaFin) {
+		this.horaFin = horaFin;
+	}
 
-    public void setRepeticiones(int repeticiones) {
-        this.repeticiones = repeticiones;
-    }
+	public int getRepeticiones() {
+		return repeticiones;
+	}
 
-    public int getNumVentanilla() {
-        return numVentanilla;
-    }
+	public void setRepeticiones(int repeticiones) {
+		this.repeticiones = repeticiones;
+	}
 
-    public void setNumVentanilla(int numVentanilla) {
-        this.numVentanilla = numVentanilla;
-    }
+	public int getNumVentanilla() {
+		return numVentanilla;
+	}
+
+	public void setNumVentanilla(int numVentanilla) {
+		this.numVentanilla = numVentanilla;
+	}
+
+   
 }
