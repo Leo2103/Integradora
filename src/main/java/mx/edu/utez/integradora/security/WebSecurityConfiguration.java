@@ -38,6 +38,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/administrador/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/ventanilla/**").hasAnyAuthority("ROLE_VENTANILLA", "ROLE_ADMIN")
                 .antMatchers("/solicitante/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers("/", "/signup", "/encriptar/**", "/reset/password/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().successHandler(successHandler).loginPage("/login").permitAll();
     }

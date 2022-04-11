@@ -13,4 +13,5 @@ public interface UserService {
     User mostrar(long id);
     Page<User> listarPaginacion(Pageable page);
     User buscarCorreo(String user);
+    boolean cambiarContrasena(String password, String username);
 }

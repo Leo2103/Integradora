@@ -15,7 +15,24 @@
 		<div class="row">
 			<div class="col-12">
 				<h1>Paso 1 para agendar cita xd</h1>
-				*se mostrara el calendario y segun dia se planea que se carguen los horarios aun disponibles*
+				<form th:action="@{/solicitante/guardarCita}" method="POST">
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label>Dia</label>
+                                <input class="form-control form-control-lg" type="date"
+                                       placeholder="Selecciona el dia">
+                            </div>
+							<div class="form-group col">
+								<label>Ventanilla</label>
+								<select class="form-control form-control-lg" >
+									<option th:each="tmpHorarioCita: ${listaHorariosCitas}" th:value="${tmpHorarioCita.idHorarioVentanilla}"
+										th:text="${tmpHorarioCita.numVentanilla}"></option>
+								</select>
+							</div>
+                           	
+
+                        </div>
+                  </form>
 			</div>
 <br>			
 			<div class="col-12">
