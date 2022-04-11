@@ -12,21 +12,35 @@
 		<div th:insert="/fragments/headerSolicitante.html "></div>
 
 <br>
-		<div class="row">
-			<div class="col-12">
-				<h1>Aqui entra paypal</h1>
-				
-			</div>
-			
-			<button type="button" class="btn btn-outline-success">Finalizar</button>
-		</div>	
-	<script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+		<a class="btn btn-danger" th:href="@{/solicitante/listCitas}">Cancelar</a>
+		<script src="https://www.paypal.com/sdk/js?client-id=ARNU3qRtAXdL15UfenLraVdQficta4QWq60TmmUAGzaJ66ehUwPOy4GYRN67D0CZAg6F0D01ePstMCmU&currency=MXN"></script>
+		<div th:href="@{/solicitante/listCitas}" style="margin-left: 200px" id="paypal-button-container"></div>
+
+		<script>
+			paypal.Buttons({
+				createOrder: (data, actions) => {
+					return actions.order.create({
+						purchase_units: [{
+							amount: {
+								value: '77.44'
+							}
+						}]
+					});
+				},
+				onApprove: (data, actions) => {
+					return actions.order.capture().then(function(orderData) {
+						const transaction = orderData.purchase_units[0].payments.captures[0];
+						alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+					});
+				}
+			}).render('#paypal-button-container');
 		</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+				integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+				integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+				crossorigin="anonymous"></script>
 </body>
 
 </html>
