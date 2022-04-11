@@ -12,4 +12,5 @@ public interface UserService {
     boolean eliminarUser(long id);
     User mostrar(long id);
     Page<User> listarPaginacion(Pageable page);
+    User buscarCorreo(String user);
 }

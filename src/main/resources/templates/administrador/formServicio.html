@@ -17,10 +17,9 @@
             <div class="card m-3">
                 <div class="card-body">
                     <h2 class="mb-3" style="align-content: center">Registrar Servicio </h2>
-                    <form th:action="@{/admin/guardar}" method="POST" th:object="${servicio}">
+                    <form th:action="@{/administrador/guardarServicio}" method="POST" th:object="${servicio}">
                         <div class="form-row">
                             <div class="form-group col">
-                                <!--Colocar aquí el id de manera oculta-->
                                 <input hidden th:field="*{id}">
                                 <label>Nombre del tramite:</label>
                                 <input class="form-control form-control-lg" type="text"
@@ -53,8 +52,10 @@
 
                         </div>
                         <center>
-                            <div class="form-row col-9">
-
+                            <div class="form-row col-4">
+                                <a th:href="@{/administrador/consultarServicios}">Cancelar</a>
+                            </div>
+                            <div class="form-row col-4">
                                 <button type="submit" class="btn btn-primary col m-3">Guardar</button>
                             </div>
                         </center>

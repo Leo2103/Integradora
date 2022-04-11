@@ -24,25 +24,27 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("SELECT correo, contrasenia, enabled FROM users WHERE correo=?")
-                .authoritiesByUsernameQuery("SELECT u.correo, r.authority FROM user_role AS ur" +
-                        "JOIN users AS u ON u.id=ur.user_id" +
-                        "JOIN role AS r ON r.id=ur.role_id WHERE u.username=?");
+                .usersByUsernameQuery("SELECT correo, contrasenia, enabled FROM users WHERE correo = ?")
+                .authoritiesByUsernameQuery("SELECT u.correo, r.authority FROM user_role AS ur "
+                        +" JOIN users AS u ON u.id= ur.user_id "
+                        +" JOIN role AS r ON r.id=ur.role_id WHERE u.correo= ? ");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(
                 "/css/**", "/js/**", "/image/**", "/images/**").permitAll()
-                .antMatchers("/", "/login","/crear").permitAll()
-                .antMatchers("/admin/**").hasAnyAuthority("ROL_ADMIN")
-                .antMatchers("/ventanilla/**").hasAnyAuthority("ROLE_VENTANILLA")
-                .antMatchers("/").hasAnyAuthority()
+                .antMatchers("/", "/login","/crear","/encriptar/**").permitAll()
+                .antMatchers("/administrador/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/ventanilla/**").hasAnyAuthority("ROLE_VENTANILLA", "ROLE_ADMIN")
+                .antMatchers("/solicitante/**").hasAnyAuthority("ROLE_USER")
                 .anyRequest().authenticated()
                 .and().formLogin().successHandler(successHandler).loginPage("/login").permitAll();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return  new BCryptPasswordEncoder();
     }
+
 }

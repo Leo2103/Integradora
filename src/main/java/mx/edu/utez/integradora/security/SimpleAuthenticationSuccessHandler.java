@@ -38,7 +38,7 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
             }
         }
         if (hasAdministradorRole) {
-            redirectStrategy.sendRedirect(request,response,"/admin/home");
+            redirectStrategy.sendRedirect(request,response,"/administrador/home");
         }else if(hasVentanillaRole){
             redirectStrategy.sendRedirect(request,response,"/ventanilla/home");
         }else if(hasUserRole){

@@ -12,7 +12,7 @@
 	<div class="container-fluid">
 		<div th:insert="/fragments/headerAdmin.html "></div>
 
-		<a class="btn btn-primary" th:href="@{/admin/formServicio}">Añadir servicio</a>
+		<a class="btn btn-primary" th:href="@{/administrador/formServicio}">Añadir servicio</a>
 		<div class="row" style="text-align: center">
 			<div class="col-12">
 				<div class="card mt-3">
@@ -21,7 +21,6 @@
 						<table class="table">
 							<thead style="background-color: #008B8B;">
 								<tr>
-									<th scope="col">Id</th>
 									<th scope="col">Nombre del servicio</th>
 									<th scope="col">Descripción</th>
 									<th scope="col">Documentos requeridos</th>
@@ -31,23 +30,22 @@
 							</thead>
 							<tbody>
 								<tr th:each="tmpServicio: ${listaServicios}">
-									<th scope="row">[[${tmpServicio.id}]]</th>
 									<td>[[${tmpServicio.nombre}]]</td>
 									<td>[[${tmpServicio.descripcion}]]</td>
 									<td>[[${tmpServicio.documentosRequeridos}]]</td>
 									<td>[[${tmpServicio.costo}]]</td>
 									<td>
-										<a th:href="@{/admin/mostrar/{id}(id=${tmpServicio.id})}" class="btn btn-info">
+										<a th:href="@{/administrador/mostrarServicio/{id}(id=${tmpServicio.id})}" class="btn btn-info">
 											<ion-icon name="eye"></ion-icon>
 										</a>
 									</td>
 									<td>
-										<a th:href="@{/admin/editar/{id}(id=${tmpServicio.id})}" class="btn btn-warning" >
+										<a th:href="@{/administrador/editarServicio/{id}(id=${tmpServicio.id})}" class="btn btn-warning" >
 											<ion-icon name="create"></ion-icon>
 										</a>
 									</td>
 									<td>
-										<a th:href="@{/admin/eliminar/{id}(id=${tmpServicio.id})}" class="btn btn-danger">
+										<a th:href="@{/administrador/eliminarServicio/{id}(id=${tmpServicio.id})}" class="btn btn-danger">
 											<ion-icon name="trash"></ion-icon>
 										</a>
 									</td>
@@ -64,12 +62,12 @@
 								<li class="page-item" th:classappend="${i eq listaServicios.number + 1} ? 'active'"
 									th:each="i : ${#numbers.sequence( 1, listaServicios.totalPages, 1)}">
 									<a class="page-link"
-										th:href="@{/admin/consultarServicios?page={tmpPag} (tmpPag=${i-1}) }"
+										th:href="@{/administrador/consultarServicios?page={tmpPag} (tmpPag=${i-1}) }"
 										th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
 								</li>
 								<li class="page-item"
 									th:classappend="${listaServicios.number == (listaServicios.totalPages - 1) ? 'disabled' : ''}">
-									<a th:href="@{/admin/consultarServicios(page=${listaServicios.number + 1})}"
+									<a th:href="@{/administrador/consultarServicios(page=${listaServicios.number + 1})}"
 										class="page-link">Siguiente</a>
 								</li>
 							</ul>

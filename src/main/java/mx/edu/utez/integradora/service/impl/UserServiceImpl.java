@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
     public Page<User> listarPaginacion(Pageable page) {
         return repository.findAll(page);
     }
+
+    @Override
+    public User buscarCorreo(String user) {
+        return repository.findByCorreo(user);
+    }
 }
