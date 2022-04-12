@@ -20,13 +20,13 @@
                         <div class="form-group col">
                             <label>Nombre:</label>
                             <input class="form-control form-control-lg" type="text"
-                                   placeholder="Ingresa el nombre del usuario" max="45">
+                                   placeholder="Ingresa el nombre del usuario" max="45" th:field="*{nombre}">
                         </div>
 
                         <div class="form-group col">
                             <label>Apellido: </label>
                             <input class="form-control form-control-lg" type="text"
-                                   placeholder="Ingresa los apellidos del usuario" max="45">
+                                   placeholder="Ingresa los apellidos del usuario" max="45" th:field="*{apellidos}">
                         </div>
                     </div>
                     <div class="form-row">
@@ -37,11 +37,6 @@
                                     <input type="checkbox" class="form-check-input" name="tipoUsuario"
                                            value="opcionAdministrador" checked>
                                     Administrador
-                                </label>
-                                <label class="form-check-label mr-4">
-                                    <input type="checkbox" class="form-check-input" name="tipoUsuario"
-                                           value="opcionUsuario">
-                                    Usuario
                                 </label>
                                 <label class="form-check-label">
                                     <input type="checkbox" class="form-check-input" name="tipoUsuario"
@@ -55,7 +50,7 @@
                         <div class="form-group col">
                             <label>Correo Electronico:</label>
                             <input class="form-control form-control-lg" type="email"
-                                   placeholder="Ingresa el correo  electrónico" max="45">
+                                   placeholder="Ingresa el correo  electrónico" max="45" th:field="*{correo}">
                         </div>
                     </div>
 
@@ -64,7 +59,7 @@
                             <label>Contraseña<span class="text-danger">*</span></label>
                             <input class="form-control form-control-lg" onchange="validarContrasena()"
                                    type="password" max="10" id="contrasena" name="contrasena" required
-                                   placeholder="12345">
+                                   placeholder="12345" th:field="*{contrasenia}">
                         </div>
                         <div class="form-group col">
                             <label>Confirmar contraseña</label>
