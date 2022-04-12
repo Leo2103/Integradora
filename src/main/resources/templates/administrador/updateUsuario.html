@@ -1,95 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Actualizacion de usuarios</title>
+    <title>Registro de usuarios</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <div class="container-fluid">
     <div th:insert="/fragments/headerAdmin.html "></div>
-
-    <div class="row" style="display: flex">
+    <div class="row">
         <div class="col-2"></div>
-        <div class="col-8">
-            <div class="card m-3">
-                <div class="card-body">
-                    <h2 class="mb-3" style="align-content: center">Actualizar usuario </h2>
-                    <form action="" method="POST">
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <!--Colocar aquí el id de manera oculta-->
-                                <input hidden>
-                                <label>Nombre del usuario:</label>
-                                <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa el nombre del usuario">
-                            </div>
-
-                            <div class="form-group col">
-                                <label>Apellidos </label>
-                                <input class="form-control form-control-lg" type="text"
-                                       placeholder="apellidos del usuario">
-                            </div>
-
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <!--Colocar aquí el id de manera oculta-->
-                                <input hidden>
-                                <label>Matricula:</label>
-                                <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa las matricula del usuario">
-                            </div>
-
-                            <div class="form-group col">
-                                <label>rol </label>
-                                <input class="form-control form-control-lg" type="text"
-                                       placeholder="ingresa el rol del usuario">
-                            </div>
-
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <!--Colocar aquí el id de manera oculta-->
-                                <input hidden>
-                                <label>Correo Electronico:</label>
-                                <input class="form-control form-control-lg" type="email"
-                                       placeholder="Ingresa el correo  Electronico">
-                            </div>
-
-                            <div class="form-group col">
-                                <label>Telefono</label>
-                                <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa el numero telefonico">
-                            </div>
-
+        <div class="col-8 card mt-3  shadow p-3 mb-5 bg-white rounded ">
+            <img class="mb-4" th:src="@{/images/logito.png}" width="200px" alt="">
+            <div class=" card-body">
+                <h2 class="mb-3">Registrar usuario </h2>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Nombre:</label>
+                            <input class="form-control form-control-lg" type="text"
+                                   placeholder="Ingresa el nombre del usuario" max="45" th:field="*{nombre}">
                         </div>
 
-
-
-                        <div class="form-row">
-                            <div class="form-group col-12">
-                                <label>Direccion</label>
-                                <textarea class="form-control" rows="3"
-                                          placeholder="Ingresa la direccion"></textarea>
-                            </div>
-
+                        <div class="form-group col">
+                            <label>Apellido: </label>
+                            <input class="form-control form-control-lg" type="text"
+                                   placeholder="Ingresa los apellidos del usuario" max="45" th:field="*{apellidos}">
                         </div>
-                        <center>
-                            <div class="form-row col-9">
-                                <a type="button" th:href="@{/admin/consultarServicios}"
-                                   class="btn btn-secondary col m-3">Cancelar</a>
-                                <button type="submit" class="btn btn-primary col m-3">Actualizar servicio</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <p>Selecciona un rol:</p>
+                            <div class="form-check">
+                                <label class="form-check-label mr-4">
+                                    <input type="checkbox" class="form-check-input" name="tipoUsuario"
+                                           value="opcionAdministrador" checked>
+                                    Administrador
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="tipoUsuario"
+                                           value="opcionVentanilla">
+                                    Ventanilla
+                                </label>
                             </div>
-                        </center>
-                    </form>
-                </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Correo Electronico:</label>
+                            <input class="form-control form-control-lg" type="email"
+                                   placeholder="Ingresa el correo  electrónico" max="45" th:field="*{correo}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Contraseña<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-lg" onchange="validarContrasena()"
+                                   type="password" max="10" id="contrasena" name="contrasena" required
+                                   placeholder="12345" th:field="*{contrasenia}">
+                        </div>
+                        <div class="form-group col">
+                            <label>Confirmar contraseña</label>
+                            <input class="form-control form-control-lg" onchange="validarContrasena()"
+                                   type="password" max="10" id="confirmarContrasena" name="confirmarContrasena"
+                                   required placeholder="12345">
+                        </div>
+                    </div>
+
+                    <center>
+                        <div class="form-row col-9">
+                            <a type="button" th:href="@{/administrador/consultarUsuarios}"
+                               class="btn btn-secondary col m-3">Cancelar</a>
+                            <button type="submit" class="btn btn-primary col m-3" onclick="validarContrasena()">
+                                Registrar servicio
+                            </button>
+                        </div>
+                    </center>
+                </form>
             </div>
         </div>
         <div class="col-2"></div>
-
     </div>
 </div>
+<script th:src="@{/js/toast.min.js}"></script>
+
+<script th:if="${msg_success != null}">
+    new Toast({
+        message: '[[${msg_success}]]',
+        type: 'success'
+    });
+</script>
+
+<script th:if="${msg_error != null}">
+    new Toast({
+        message: '[[${msg_error}]]',
+        type: 'danger'
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<!--Mask inputs-->
+<script th:src="@{/js/jquery.mask.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('.phone-mask').mask('(000)000-00-00');
+    });
+</script>
+
+<!--Validaciones-->
+<script>
+    function validarContrasena() {
+        var pass1 = $("#contrasena").val();
+        var pass2 = $("#confirmarContrasena").val();
+        var submitButton = $("#registrar");
+        if (pass1 !== pass2) {
+            submitButton.attr('disabled', true);
+            $("#contrasena").addClass('is-invalid');
+            $("#confirmarContrasena").addClass('is-invalid');
+            $(".alertPass").attr('hidden', false);
+            event.preventDefault();
+            return;
+        } else {
+            $("#contrasena").removeClass("is-invalid");
+            $("#confirmarContrasena").removeClass("is-invalid");
+            $(".alertPass").attr('hidden', true);
+            submitButton.attr('disabled', false);
+        }
+    }
+</script>
 </body>
 </html>

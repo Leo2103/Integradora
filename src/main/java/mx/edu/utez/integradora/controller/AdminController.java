@@ -63,7 +63,7 @@ public class AdminController {
     @GetMapping(path = "/consultarUsuarios")
     public String gestionarUsuarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
         Page<User> listaUsuarios = userService
-                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 10));
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 5));
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "administrador/listUsuarios";
     }
@@ -86,7 +86,7 @@ public class AdminController {
         return "administrador/formUsuario";
     }
 
-    @GetMapping(path = "/eliminarUser/{id}")
+    @GetMapping(path = "/eliminarUsuario/{id}")
     public String eliminarUsuario(@PathVariable ("id") long id, RedirectAttributes redirectAttributes){
         boolean respuesta = userService.eliminarUser(id);
         if (respuesta) {
@@ -94,15 +94,15 @@ public class AdminController {
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "Eliminacion fallida");
         }
-        return "redirect:/administrador/consultarServicios";
+        return "redirect:/administrador/consultarUsuarios";
     }
 
-    @GetMapping(path = "/editarUser/{id}")
+    @GetMapping(path = "/editarUsuario/{id}")
     public String editarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes){
         User user = userService.mostrar(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "administrador/formUsuario";
+            return "administrador/updateUsuario";
         }
         return "redirect:/administrador/consultarUsuarios";
     }
@@ -116,8 +116,35 @@ public class AdminController {
         return "redirect:/administrador/consultarServicios";
     }
 
+    @PostMapping(path = "/guardarCambios")
+    public String guardarCambios(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes){
+        User userExistente= userService.mostrar(user.getId());
+        if (userExistente==null){
+            return "redirect:/administrador/formUsuario";
+        }else{
+            userExistente.setCorreo(user.getCorreo());
+            String contra = userExistente.getContrasenia();
+            String contraEncrip = passwordEncoder.encode(contra);
+            userExistente.setContrasenia(contraEncrip);
+            Role rol=null;
+            if (tipoUsuario.equals("opcionAdministrador")) {
+                rol = roleService.buscarAuthority("ROLE_ADMIN");
+            } else if (tipoUsuario.equals("opcionVentanilla")) {
+                rol = roleService.buscarAuthority("ROLE_VENTANILLA");
+            }
+            userExistente.agregarRole(rol);
+            boolean respuesta = userService.crearUser(user);
+            if (respuesta) {
+                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+                return "redirect:/administrador/consultarUsuarios";
+            } else {
+                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+                return "redirect:/administrador/editarUsuario/{id}";
+            }
+        }
+    }
     @PostMapping(path = "/guardarUser")
-    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, User user, Solicitante solicitante, RedirectAttributes attributes) {
+    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes) {
         String contra = user.getContrasenia();
         String contraEncrip = passwordEncoder.encode(contra);
         user.setContrasenia(contraEncrip);
