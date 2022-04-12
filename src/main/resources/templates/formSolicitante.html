@@ -23,18 +23,18 @@
 
                     </div>
                     <h2 class="mb-3" style="margin-left: 470px;">Registrate </h2>
-                    <form th:action="@{/solicitante/guardar}" method="POST">
+                    <form th:action="@{/solicitante/guardar}" method="POST" th:object="${user}">
                         <div class="form-row">
                             <div class="form-group col">
                                 <label>Nombre(s)</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa tu(s) nombre(s)" required>
+                                       placeholder="Ingresa tu(s) nombre(s)" required th:field="*{nombre}">
                             </div>
 
                             <div class="form-group col">
                                 <label>Apellidos</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa tus apellidos" required>
+                                       placeholder="Ingresa tus apellidos" required th:field="*{apellidos}">
                             </div>
 
                         </div>
@@ -43,13 +43,13 @@
                             <div class="form-group col">
                                 <label>Matricula</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa tu matricula" required>
+                                       placeholder="Ingresa tu matricula" required name="matricula">
                             </div>
 
                             <div class="form-group col">
                                 <label>Carrera</label>
                                 <input class="form-control form-control-lg" type="text"
-                                       placeholder="Ingresa tu carrera" required>
+                                       placeholder="Ingresa tu carrera" required name="carrera">
                             </div>
                         </div>
 
@@ -57,12 +57,12 @@
                             <div class="form-group col">
                                 <label>Correo electrónico</label>
                                 <input class="form-control form-control-lg" type="email"
-                                       placeholder="ejemplo@gmail.com" required>
+                                       placeholder="ejemplo@gmail.com" required th:field="*{correo}">
                             </div>
                             <div class="form-group col">
                                 <label>Telefóno<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-lg phone-mask" maxlength="10"
-                                       minlength="14" placeholder="( ___ ) - ___ - __ - __" required>
+                                       minlength="14" placeholder="( ___ ) - ___ - __ - __" required name="telefono">
                             </div>
 
                         </div>

@@ -43,6 +43,11 @@
                                            value="opcionVentanilla">
                                     Ventanilla
                                 </label>
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="tipoUsuario"
+                                           value="opcionUser">
+                                    Solicitante
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -97,11 +102,7 @@
 
 <!--Mask inputs-->
 <script th:src="@{/js/jquery.mask.min.js}"></script>
-<script>
-    $(document).ready(function () {
-        $('.phone-mask').mask('(000)000-00-00');
-    });
-</script>
+
 
 <!--Validaciones-->
 <script>

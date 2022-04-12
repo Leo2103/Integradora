@@ -132,6 +132,8 @@ public class AdminController {
                 rol = roleService.buscarAuthority("ROLE_ADMIN");
             } else if (tipoUsuario.equals("opcionVentanilla")) {
                 rol = roleService.buscarAuthority("ROLE_VENTANILLA");
+            }else{
+                rol= roleService.buscarAuthority("ROLE_USER");
             }
             userExistente.agregarRole(rol);
             boolean respuesta = userService.crearUser(user);
