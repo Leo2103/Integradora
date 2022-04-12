@@ -1,11 +1,12 @@
 package mx.edu.utez.integradora.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 @Entity
 @Table(name = "cita")
-public class Cita {
+public class Cita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idcita;
@@ -26,10 +27,8 @@ public class Cita {
     @JoinColumn(name = "idSolicitante")
     private Solicitante solicitante;
     public Cita(){}
-	public Cita(long idcita, Time hora, Date fecha, HorarioCita ventanilla, Servicio servicio, User user,
+	public Cita(Time hora, Date fecha, HorarioCita ventanilla, Servicio servicio, User user,
 			String documentoAnexos, String estatus, Solicitante solicitante) {
-		super();
-		this.idcita = idcita;
 		this.hora = hora;
 		this.fecha = fecha;
 		this.ventanilla = ventanilla;

@@ -2,7 +2,6 @@ package mx.edu.utez.integradora.controller;
 
 import mx.edu.utez.integradora.model.Role;
 import mx.edu.utez.integradora.model.Servicio;
-import mx.edu.utez.integradora.model.Solicitante;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.RoleServiceImpl;
 import mx.edu.utez.integradora.service.impl.ServicioServiceImpl;
