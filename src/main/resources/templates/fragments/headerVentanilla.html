@@ -1,0 +1,21 @@
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <a th:href="@{/home/}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <img th:src="@{/images/logito.png}" style="width: 150px;">
+    </a>
+    <nav class="navbar navbar-expand-lg navbar-light  nav-color">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <big>
+                <div class="navbar-nav">
+                 <a class="nav-item nav-link" th:href="@{/ventanilla/home}">Perfil<span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" th:href="@{/ventanilla/citas}">Consultar citas</a>
+                    <a class="nav-item nav-link" th:href="@{/ventanilla/gestionarHorario}">Gestion Horario</a>
+                    <a class="nav-item nav-link mr-3 ml-3 mb-3"  th:href="@{/ventanilla/logout}">Cerrar Sesión</a>
+                                    
+                </div>
+            </big>
+    </nav>
+</header>

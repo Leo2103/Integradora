@@ -1,14 +1,16 @@
 package mx.edu.utez.integradora.model;
 
 import javax.persistence.*;
-import java.sql.Time;@Entity
+import java.sql.Time;
+import java.util.Date;
+@Entity
 @Table(name = "cita")
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idcita;
-    private String hora;
-    private String fecha;
+    private Time hora;
+    private Date fecha;
     @ManyToOne
     @JoinColumn(name = "idHorarioVentanilla")
     private HorarioCita ventanilla;
@@ -24,7 +26,7 @@ public class Cita {
     @JoinColumn(name = "idSolicitante")
     private Solicitante solicitante;
     public Cita(){}
-	public Cita(long idcita, String hora, String fecha, HorarioCita ventanilla, Servicio servicio, User user,
+	public Cita(long idcita, Time hora, Date fecha, HorarioCita ventanilla, Servicio servicio, User user,
 			String documentoAnexos, String estatus, Solicitante solicitante) {
 		super();
 		this.idcita = idcita;
@@ -43,16 +45,16 @@ public class Cita {
 	public void setIdcita(long idcita) {
 		this.idcita = idcita;
 	}
-	public String getHora() {
+	public Time getHora() {
 		return hora;
 	}
-	public void setHora(String hora) {
+	public void setHora(Time hora) {
 		this.hora = hora;
 	}
-	public String getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 	public HorarioCita getVentanilla() {

@@ -25,6 +25,7 @@ public class EmailServiceImpl implements EmailService{
 	@Override
 	public boolean sendEmail(String emailTo, String emailSubject, String emailContent) {
 		Email from = new Email(emailFrom);
+		
 		Email to = new Email(emailTo);
 		Content content = new Content("text/html", emailContent); // text/plain or text/html
 		Mail mail = new Mail(from, emailSubject, to, content);
