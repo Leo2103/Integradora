@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title></title>
+	<title>Mis Citas</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<!--Toast-->
@@ -11,56 +11,85 @@
 
 <body>
 	<div class="container" style="text-align: center;">
-		<div th:insert="~{fragments/header :: header}"></div>
+		<div th:insert="/fragments/headerVentanilla.html "></div>
 
 		<div class="row">
 			<div class="col-12">
+				<a type="button" class="btn btn-outline-primary btn-lg btn-block" th:href="@{/solicitante/agendar1}">Nueva Cita</a>
 				<div class="card mt-3">
 					<div class="card-body">
-					
 						<table class="table">
 							<thead style="background-color: #008B8B;">
 								<tr>
-									<th scope="col">Id</th>
-									<th scope="col">Nombre del solicitante</th>
-									<th scope="col">Horario</th>
-									<th scope="col">Trámite</th>
+									<th scope="col">Tramite</th>
+									<th scope="col">No.Ventanilla</th>
 									<th scope="col">Documentos</th>
-									<th scope="col">Atiende</th>
+									<th scope="col">fecha</th>
+									<th scope="col">Hora</th>
+									<th scope="col">Costo</th>
+									<th scope="col">Solicitante:</th>
 									<th scope="col">Estado</th>
-									<th scope="col">Finalizar cita</th>
-									<th colspan="3">Eliminar cita</th>
+									<th colspan="3">Cancelar</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Andrés Leonardo Vázquez Oviedo</td>
-									<td>14:00</td>
-									<td>Certificado de TSU</td>
-									<td>Cédula profesional de TSU </td>
-									<td>Abraham Rashid</td>
+								<tr th:each="tmpCita: ${listaCitas}">
+									<td>[[${tmpCita.servicio.nombre}]]</td>
+									<td>[[${tmpCita.ventanilla.numVentanilla}]]</td>
+									<td>[[${tmpCita.documentoAnexos}]]</td>
+									<td th:text="${#dates.format(tmpCita.fecha, 'dd-MM-yyyy')}"></td>
+									<td>[[${tmpCita.hora}]]</td>
+									<td>[[${tmpCita.servicio.costo}]]</td>
+									<td>[[${tmpCita.solicitante.usuario.nombre}]]</td>
 									<td>
-										<div>
-											<div>
+										<div th:switch="${tmpCita.estatus}">
+											<div th:case="'agendada'">
 												<small class="text-muted"><span
-														class="badge badge-pill badge-warning">En curso</span></small>
+														class="badge badge-pill badge-success">Agendada</span></small>
+											</div>
+											<div th:case="'finalizada'">
+												<p lass="text-muted">
+													<span class="badge badge-pill badge-primary">Finalizada</span>
+												</p>
+											</div>
+											<div th:case="'cancelada'">
+												<p lass="text-muted">
+													<span class="badge badge-pill badge-danger">Cancelada</span>
+												</p>
 											</div>
 										</div>
 									</td>
 									<td>
-										<a href="" class="btn btn-info">
-											<ion-icon name="checkmark-circle"></ion-icon>
+										<a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/finalizar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-primary">
+											<ion-icon name="checkmark-circle-outline"></ion-icon>
 										</a>
-									</td>
-									<td>
-										<a class="btn btn-danger">
-											<ion-icon name="trash"></ion-icon>
+										<a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/cancelar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-danger">
+											<ion-icon name="thumbs-down"></ion-icon>
 										</a>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						 <nav th:if="${listaCitas.totalPages > 0}" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${listaCitas.number == 0 ? 'disabled' : ''}">
+                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number - 1})}"
+                                   class="page-link">Anterior</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${i eq listaCitas.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, listaCitas.totalPages, 1)}">
+                                <a class="page-link"
+                                   th:href="@{/solicitante/listCitas?page={tmpPag} (tmpPag=${i-1}) }"
+                                   th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${listaCitas.number == (listaCitas.totalPages - 1) ? 'disabled' : ''}">
+                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number + 1})}"
+                                   class="page-link">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
 					</div>
 				</div>
 			</div>

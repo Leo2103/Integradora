@@ -37,7 +37,7 @@
 									<td>[[${tmpCita.servicio.nombre}]]</td>
 									<td>[[${tmpCita.ventanilla.numVentanilla}]]</td>
 									<td>[[${tmpCita.documentoAnexos}]]</td>
-									<td>[[${tmpCita.fecha}]]</td>
+									<td th:text="${#dates.format(tmpCita.fecha, 'dd-MM-yyyy')}"></td>
 									<td>[[${tmpCita.hora}]]</td>
 									<td>[[${tmpCita.servicio.costo}]]</td>
 									<td>[[${tmpCita.user.nombre}]]</td>

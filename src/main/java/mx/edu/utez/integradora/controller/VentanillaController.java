@@ -1,12 +1,20 @@
 package mx.edu.utez.integradora.controller;
 
+import mx.edu.utez.integradora.model.Cita;
 import mx.edu.utez.integradora.model.User;
+import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
 import mx.edu.utez.integradora.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -17,6 +25,8 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/ventanilla")
 public class VentanillaController {
 
+	 @Autowired
+		CitaServiceImpl citaService;
 	@Autowired
 	private UserServiceImpl userService;
 
@@ -41,9 +51,32 @@ public class VentanillaController {
 		return "/login";
 	}
 	@GetMapping("/citas")
-	public String gestionarUsuarios() {
+	public String gestionarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6, Sort.by("fecha").descending()));
+        model.addAttribute("listaCitas", listaCitas);
 		return "ventanilla/gestionarCita";
 	}
+	
+	@GetMapping(path = "/cancelar/{id}")
+    public String cancelarCita(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+        Cita respuesta = citaService.mostrar(id);
+        respuesta.setEstatus("cancelada");
+        citaService.crearCita(respuesta);
+		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6));
+        model.addAttribute("listaCitas", listaCitas);
+		return "redirect:/ventanilla/citas";
+    }
+	
+	@GetMapping(path = "/finalizar/{id}")
+    public String finalizarCita(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+        Cita respuesta = citaService.mostrar(id);
+        respuesta.setEstatus("finalizada");
+        citaService.crearCita(respuesta);
+		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6));
+        model.addAttribute("listaCitas", listaCitas);
+		return "redirect:/ventanilla/citas";
+    }
+	
 	@GetMapping(path = "/gestionHora")
 	public String gestionHorario() {
 		return "ventanilla/gestionarHorario";

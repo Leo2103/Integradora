@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org/">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<title>Inicio</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
+
 <body>
-<h1>Prueba</h1>
+	<div class="container">
+		<div th:insert="/fragments/headerVentanilla.html "></div>
+
+<br>
+		<div class="row">
+			<div class="col-12">
+				<h1>Bienvenido Trabajador de ventanilla</h1>
+				*Se tendran opciones de modificar datos*
+			</div>
+			
+			
+		</div>	
+	<script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+		</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
+
 </html>
