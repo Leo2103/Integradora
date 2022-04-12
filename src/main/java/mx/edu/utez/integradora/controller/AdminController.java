@@ -98,19 +98,12 @@ public class AdminController {
             role = roleService.buscarAuthority("ROLE_ADMIN");
         } else if (tipoUsuario.equals("opcionVentanilla")) {
             role = roleService.buscarAuthority("ROLE_VENTANILLA");
-        } else {
-            role = roleService.buscarAuthority("ROLE_USER");
         }
         user.agregarRole(role);
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
-            if (tipoUsuario.equals("opciónUsuario")) {
-                userService.crearUser(user);
-                return "usuario/form";
-            } else {
                 attributes.addFlashAttribute("msg_success", "Registro exitoso");
-                return "administrador/listUsuarios";
-            }
+                return "redirect:/administrador/consultarUsuarios";
         } else {
             attributes.addFlashAttribute("msg_error", "Registro fallido");
             return "redirect:/administrador/formUsuario";
