@@ -22,7 +22,6 @@
                     <table class="table">
                         <thead style="background-color: #008B8B;">
                         <tr>
-                            <th scope="col">Id</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellidos</th>
                             <th scope="col">Rol</th>
@@ -32,13 +31,12 @@
                         </thead>
                         <tbody>
                         <tr th:each="tmpUser: ${listaUsuarios}">
-                            <th scope="row">[[${tmpUser.id}]]</th>
                             <td>[[${tmpUser.nombre}]]</td>
                             <td>[[${tmpUser.apellidos}]]</td>
                             <td th:text="${tmpUser.rol[0].authority}"></td>
                             <td th:text="${tmpUser.enabled == true} ? 'Habilitado' : 'Inhabilitado'"></td>
                             <td>
-                                <a th:href="@{/admin/updateUsuario}" class="btn btn-warning">
+                                <a th:href="@{/administrador/updateUsuario}" class="btn btn-warning">
                                     <ion-icon name="create"></ion-icon>
                                 </a>
                             </td>
@@ -50,26 +48,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    <nav th:if="${listaUsuarios.totalPages > 0}" aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item" th:classappend="${listaUsuarios.number == 0 ? 'disabled' : ''}">
-                                <a th:href="@{/administrador/consultarUsuarios(page=${listaUsuarios.number - 1})}"
-                                   class="page-link">Anterior</a>
-                            </li>
-
-                            <li class="page-item" th:classappend="${i eq listaUsuarios.number + 1} ? 'active'"
-                                th:each="i : ${#numbers.sequence( 1, listaUsuarios.totalPages, 1)}">
-                                <a class="page-link"
-                                   th:href="@{/administrador/consultarUsuarios?page={tmpPag} (tmpPag=${i-1}) }"
-                                   th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
-                            </li>
-                            <li class="page-item"
-                                th:classappend="${listaUsuarios.number == (listaUsuarios.totalPages - 1) ? 'disabled' : ''}">
-                                <a th:href="@{/administrador/consultarUsuarios(page=${listaUsuarios.number + 1})}"
-                                   class="page-link">Siguiente</a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
