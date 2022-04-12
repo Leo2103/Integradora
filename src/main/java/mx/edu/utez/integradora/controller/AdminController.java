@@ -86,6 +86,36 @@ public class AdminController {
         return "administrador/formUsuario";
     }
 
+    @GetMapping(path = "/eliminarUser/{id}")
+    public String eliminarUsuario(@PathVariable ("id") long id, RedirectAttributes redirectAttributes){
+        boolean respuesta = userService.eliminarUser(id);
+        if (respuesta) {
+            redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "Eliminacion fallida");
+        }
+        return "redirect:/administrador/consultarServicios";
+    }
+
+    @GetMapping(path = "/editarUser/{id}")
+    public String editarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes){
+        User user = userService.mostrar(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "administrador/formUsuario";
+        }
+        return "redirect:/administrador/consultarUsuarios";
+    }
+    @GetMapping(path = "/mostrarUsuario/{id}")
+    public String mostrarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
+        User user = userService.mostrar(id);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "administrador/mostrarServicio";
+        }
+        return "redirect:/administrador/consultarServicios";
+    }
+
     @PostMapping(path = "/guardarUser")
     public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, User user, Solicitante solicitante, RedirectAttributes attributes) {
         String contra = user.getContrasenia();
@@ -109,6 +139,7 @@ public class AdminController {
             return "redirect:/administrador/formUsuario";
         }
     }
+
 
     @PostMapping(path = "/guardarServicio")
     public String guadarServicio(Servicio servicio, Model model, RedirectAttributes attributes) {

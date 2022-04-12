@@ -2,43 +2,66 @@
 <html>
 
 <head>
-	<title></title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
-	<div class="col-8" th:each="tmpServicio: ${servicio}" style="text-align: center;margin-left: 250px;">
-		<div class="card mt-3">
-			<div class="card-body">
-				<div class=row>
-					<div class="col-12">
-						<h4>
-							Nombre:
-							<h3 class="text-muted">[[${tmpServicio.nombre}]]</h3>
-						</h4>
-						<h4>
-							Descripcion:
-							<h3 class="text-muted">[[${tmpServicio.descripcion}]]</h3>
-						</h4>
-						<h4>
-							Documentos Requeridos:
-							<h3 class="text-muted">[[${tmpServicio.documentosRequeridos}]]</h3>
-						</h4>
-						<h4>
-							Costo:
-							<h3 class="text-muted">[[${tmpServicio.costo}]]</h3>
-						</h4>
-						<a href="#" class="btn btn-primary btn-lg btn-block mt-3">
-							<ion-icon name="create"></ion-icon>&nbsp;Editar
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	</div>
+<div class="container-fluid">
+    <div th:insert="/fragments/headerAdmin.html "></div>
+    <div class="row" style="display: flex">
+        <div class="col-2"></div>
+        <div class="col-8" th:each="tmpServicio: ${servicio}">
+            <div class="card m-3">
+                <div class="card-body">
+                    <h2 class="mb-3 mr-5 ml-5">Registrar Servicio </h2>
+                    <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col">
+                            <label>Nombre del tramite:</label>
+                            <h4 th:text="${servicio.nombre}"></h4>
+                        </div>
+
+                        <div class="form-group col">
+                            <label>Costo</label>
+                            <h4 th:text="${servicio.costo}"></h4>
+                        </div>
+                        <div class="col-2"></div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col-8">
+                            <label>Descripción</label>
+                            <h4 th:text="${servicio.descripcion}"></h4>
+                        </div>
+                        <div class="col-2"></div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col-8">
+                            <label>Documentos requeridos</label>
+                            <h4 th:text="${servicio.documentosRequeridos}"></h4>
+                        </div>
+                        <div class="col-2"></div>
+
+                    </div>
+                </div>
+            </div>
+            <center>
+            <div class="form-row col-4">
+                <a class="btn btn-secondary" th:href="@{/administrador/consultarServicios}">Regresar</a>
+            </div>
+            </center>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
 </body>
 
 </html>
