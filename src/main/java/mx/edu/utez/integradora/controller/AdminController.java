@@ -87,7 +87,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/eliminarUsuario/{id}")
-    public String eliminarUsuario(@PathVariable ("id") long id, RedirectAttributes redirectAttributes){
+    public String eliminarUsuario(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
         boolean respuesta = userService.eliminarUser(id);
         if (respuesta) {
             redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
@@ -98,14 +98,15 @@ public class AdminController {
     }
 
     @GetMapping(path = "/editarUsuario/{id}")
-    public String editarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes){
+    public String editarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
         User user = userService.mostrar(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "administrador/updateUsuario";
+            return "administrador/formUsuario";
         }
         return "redirect:/administrador/consultarUsuarios";
     }
+
     @GetMapping(path = "/mostrarUsuario/{id}")
     public String mostrarUsuario(@PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
         User user = userService.mostrar(id);
@@ -117,16 +118,16 @@ public class AdminController {
     }
 
     @PostMapping(path = "/guardarCambios")
-    public String guardarCambios(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes){
-        User userExistente= userService.mostrar(user.getId());
-        if (userExistente==null){
+    public String guardarCambios(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes) {
+        User userExistente = userService.mostrar(user.getId());
+        if (userExistente == null) {
             return "redirect:/administrador/formUsuario";
-        }else{
+        } else {
             userExistente.setCorreo(user.getCorreo());
             String contra = userExistente.getContrasenia();
             String contraEncrip = passwordEncoder.encode(contra);
             userExistente.setContrasenia(contraEncrip);
-            Role rol=null;
+            Role rol = null;
             if (tipoUsuario.equals("opcionAdministrador")) {
                 rol = roleService.buscarAuthority("ROLE_ADMIN");
             } else if (tipoUsuario.equals("opcionVentanilla")) {
@@ -145,28 +146,25 @@ public class AdminController {
     }
     @PostMapping(path = "/guardarUser")
     public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes) {
-        String contra = user.getContrasenia();
-        String contraEncrip = passwordEncoder.encode(contra);
-        user.setContrasenia(contraEncrip);
-        user.setEnabled(true);
-        user.setCorreo(user.getCorreo());
-        Role role = null;
-        if (tipoUsuario.equals("opcionAdministrador")) {
-            role = roleService.buscarAuthority("ROLE_ADMIN");
-        } else if (tipoUsuario.equals("opcionVentanilla")) {
-            role = roleService.buscarAuthority("ROLE_VENTANILLA");
+        if (user.getContrasenia() != null){
+            user.setEnabled(user.isEnabled());
+            user.setCorreo(user.getCorreo());
+            user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
+        }else{
+            User userExistente = userService.mostrar(user.getId());
+            user.setEnabled(userExistente.isEnabled());
+            user.setContrasenia(userExistente.getContrasenia());
+            user.setRol(userExistente.getRol());
         }
-        user.agregarRole(role);
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
-                attributes.addFlashAttribute("msg_success", "Registro exitoso");
-                return "redirect:/administrador/consultarUsuarios";
+            attributes.addFlashAttribute("msg_success", "Registro exitoso");
+            return "redirect:/administrador/consultarUsuarios";
         } else {
             attributes.addFlashAttribute("msg_error", "Registro fallido");
             return "redirect:/administrador/formUsuario";
         }
     }
-
 
     @PostMapping(path = "/guardarServicio")
     public String guadarServicio(Servicio servicio, Model model, RedirectAttributes attributes) {
