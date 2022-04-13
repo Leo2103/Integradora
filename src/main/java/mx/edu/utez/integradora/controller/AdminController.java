@@ -38,12 +38,10 @@ public class AdminController {
     private SolicitanteServiceImpl solicitanteService;
 
     @GetMapping(path = "/home")
-    public String home(Authentication authentication, HttpSession session) {
-        if (session.getAttribute("user") == null) {
-            User user = userService.buscarCorreo(authentication.getName());
-            user.setContrasenia(null);
-            session.setAttribute("user", user);
-        }
+    public String home(Model model,Authentication authentication, HttpSession session) {
+    	User user = userService.buscarCorreo(authentication.getName());
+		session.setAttribute("user", user);
+		model.addAttribute("user",user);
         return "/administrador/adminHome";
     }
 

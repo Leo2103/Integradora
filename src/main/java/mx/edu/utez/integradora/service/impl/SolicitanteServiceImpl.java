@@ -1,6 +1,7 @@
 package mx.edu.utez.integradora.service.impl;
 
 import mx.edu.utez.integradora.model.Solicitante;
+import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.repository.SolicitanteRepository;
 import mx.edu.utez.integradora.service.SolicitanteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,14 @@ public class SolicitanteServiceImpl implements SolicitanteService {
     @Override
     public Solicitante mostrar(long id) {
         Optional<Solicitante> obj = repository.findById(id);
+        if (obj.isPresent()) {
+            return obj.get();
+        }
+        return null;
+    }
+    @Override
+    public Solicitante buscarporUser(User usuario) {
+        Optional<Solicitante> obj = repository.findByUsuario(usuario);
         if (obj.isPresent()) {
             return obj.get();
         }

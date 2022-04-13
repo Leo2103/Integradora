@@ -10,12 +10,19 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <big>
                 <div class="navbar-nav">
-                 <a class="nav-item nav-link" th:href="@{/ventanilla/home}">Perfil<span class="sr-only">(current)</span></a>
                     <a class="nav-item nav-link" th:href="@{/ventanilla/citas}">Consultar citas</a>
                     <a class="nav-item nav-link" th:href="@{/ventanilla/gestionarHorario}">Gestion Horario</a>
-                    <a class="nav-item nav-link mr-3 ml-3 mb-3"  th:href="@{/ventanilla/logout}">Cerrar Sesión</a>
-                                    
-                </div>
+<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img src="https://www.itcsystem.es/wp-content/uploads/2019/01/avatar-372-456324.png"
+						class="rounded-circle" height="30" alt="Perfil">&nbsp;
+					<span class="text-dark" th:if="${session.user != null}" th:text="'Hola ' + ${session.user.getNombre()}"></span>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" th:href="@{/ventanilla/home}">Perfil</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" th:href="@{/ventanilla/logout}">Cerrar sesi�n</a>
+				</div>                </div>
             </big>
     </nav>
 </header>

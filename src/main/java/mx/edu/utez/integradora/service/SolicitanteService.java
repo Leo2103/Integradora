@@ -1,6 +1,8 @@
 package mx.edu.utez.integradora.service;
 
 import mx.edu.utez.integradora.model.Solicitante;
+import mx.edu.utez.integradora.model.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,5 +14,5 @@ public interface SolicitanteService {
     Solicitante mostrar(long id);
     boolean crearSolicitante(Solicitante solicitante);
     boolean eliminarSolicitante(long id);
-
+    Solicitante buscarporUser(User usuario);
 }

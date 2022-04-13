@@ -12,14 +12,106 @@
 		<div th:insert="/fragments/headerSolicitante.html "></div>
 
 <br>
-		<div class="row">
-			<div class="col-12">
-				<h1>Bienvenido Solicitante</h1>
-				*Se tendran opciones de modificar datos*
+    <div class="row" style="display: flex">
+        <div class="col-1"></div>
+        <div class="col-6" th:each="tmpSolicitante: ${solicitante}">
+            <div class="card m-3">
+                <div class="card-body">
+                    <h2 class="mb-3 mr-5 ml-5 text-muted" th:text="${user.getNombre()}"></h2>
+                    <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col-5">
+                            <label class="text-muted">Apellidos</label>
+                            <h4 class="text-primary" th:text="${user.getApellidos()}"></h4>
+                        </div>
+                        <div class="form-group col-5">
+                            <label class="text-muted">Telefono:</label>
+                            <h4 class="text-primary" th:text="${solicitante.telefono}"></h4>
+                        </div>
+                        <div class="col-2"></div>
+
+                    </div>
+
+                     <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col-5">
+                            <label class="text-muted">Email:</label>
+                            <h4 class="text-primary" th:text="${user.getCorreo()}"></h4>
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label class="text-muted">Rol</label>
+                            <h4 class="text-primary" th:text="Solicitante"></h4>
+                        </div>
+                        <div class="col-2"></div>
+
+                    </div>
+                     <div class="form-row">
+                        <div class="col-2"></div>
+                        <div class="form-group col-5">
+                            <label class="text-muted">Carrera:</label>
+                            <h4 class="text-primary" th:text="${solicitante.carrera}"></h4>
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label class="text-muted">Matricula:</label>
+                            <h4 class="text-primary" th:text="${solicitante.matricula}"></h4>
+                        </div>
+                        
+                        <div class="col-2"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+			<div class="card-body">
+			    <h2 class="mb-3" style="align-content: center">Cambiar Contraseña</h2>
+				<form th:action="@{/solicitante/cambiarContra}" method="POST" th:object="${user}" >
+	                        <div class="form-row">
+	                            <label>Nueva Contraseña<span class="text-danger">*</span></label>
+	                            <input class="form-control form-control-lg" onchange="validarContrasena()"
+	                                   type="password" max="10" id="contrasena" name="contrasena" required
+	                                   placeholder="12345" th:field="*{contrasenia}">
+	                        </div>
+	                        <div class="form-row">
+	                            <label>Confirmar contraseña</label>
+	                            <input class="form-control form-control-lg" onchange="validarContrasena()"
+	                                   type="password" max="10" id="confirmarContrasena" name="confirmarContrasena"
+	                                   required placeholder="12345">
+	                        </div>
+	                         <div class="form-row">
+                                <button type="submit" class="btn btn-primary col m-3">Cambiar</button>
+                            </div>
+	                    </div>
+	               </form>
 			</div>
+		</div>
+    </div>
+</div>
 			
 			
 		</div>	
+		<script>
+    function validarContrasena() {
+        var pass1 = $("#contrasena").val();
+        var pass2 = $("#confirmarContrasena").val();
+        var submitButton = $("#registrar");
+        if (pass1 !== pass2) {
+            submitButton.attr('disabled', true);
+            $("#contrasena").addClass('is-invalid');
+            $("#confirmarContrasena").addClass('is-invalid');
+            $(".alertPass").attr('hidden', false);
+            event.preventDefault();
+            return;
+        } else {
+            $("#contrasena").removeClass("is-invalid");
+            $("#confirmarContrasena").removeClass("is-invalid");
+            $(".alertPass").attr('hidden', true);
+            submitButton.attr('disabled', false);
+        }
+    }
+</script>
 	<script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
 		</script>
