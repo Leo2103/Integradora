@@ -64,6 +64,28 @@ public class AdminController {
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "administrador/listUsuarios";
     }
+    @PostMapping(path = "/cambiarContra")
+    public String guardarCambios( User user, RedirectAttributes attributes) {
+        User userExistente = userService.mostrar(user.getId());
+        if (userExistente == null) {
+            return "redirect:/administrador/home";
+        } else {
+            String contrar = user.getContrasenia();
+            String contraEncrip = passwordEncoder.encode(contrar);
+    		boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
+	  		  System.out.println(contrar);
+	  		  System.out.println(contraEncrip);
+	  		  System.out.println(userExistente.getCorreo());
+  		  System.out.println(respuestaCambio);
+            if (respuestaCambio) {
+                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+                return "redirect:/administrador/home";
+            } else {
+                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+                return "redirect:/administrador/home";
+            }
+        }
+    }
 
     @GetMapping(path = "/consultarServicios")
     public String gestionarServicios(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {

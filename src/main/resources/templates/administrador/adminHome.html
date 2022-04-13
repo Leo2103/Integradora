@@ -54,19 +54,28 @@
         <div class="col-4">
 			<div class="card-body">
 			    <h2 class="mb-3" style="align-content: center">Cambiar Contraseña</h2>
-				<form th:action="@{/administrador/cambiarContra}" method="POST" th:object="${user}" >
+			<form th:action="@{/administrador/cambiarContra}" method="POST" th:object="${user}">
 	                        <div class="form-row">
 	                            <label>Nueva Contraseña<span class="text-danger">*</span></label>
 	                            <input class="form-control form-control-lg" onchange="validarContrasena()"
 	                                   type="password" max="10" id="contrasena" name="contrasena" required
-	                                   placeholder="12345" th:field="*{contrasenia}">
+	                                    th:field="*{contrasenia}"
+	                                   placeholder="12345">
 	                        </div>
 	                        <div class="form-row">
+	                        
 	                            <label>Confirmar contraseña</label>
 	                            <input class="form-control form-control-lg" onchange="validarContrasena()"
 	                                   type="password" max="10" id="confirmarContrasena" name="confirmarContrasena"
 	                                   required placeholder="12345">
 	                        </div>
+	                        <input hidden type="number" name="idUsuario"  th:field="*{id}">
+	                        <input hidden    th:field="*{apellidos}">
+	                        <input hidden    th:field="*{nombre}">
+	                        <input hidden    th:field="*{enabled}">	                        
+	                       	<input hidden    th:field="*{correo}">
+	                        
+	                       	<input hidden name="tipoUsuario" value="opcionSolicitante">
 	                         <div class="form-row">
                                 <button type="submit" class="btn btn-primary col m-3">Cambiar</button>
                             </div>
