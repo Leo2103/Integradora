@@ -165,18 +165,9 @@ public class AdminController {
             }
         }
     }
-    @PostMapping(path = "/guardarUser")
-    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes) {
-        if (user.getContrasenia() != null){
-            user.setEnabled(user.isEnabled());
-            user.setCorreo(user.getCorreo());
-            user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
-        }else{
-            User userExistente = userService.mostrar(user.getId());
-            user.setEnabled(userExistente.isEnabled());
-            user.setContrasenia(userExistente.getContrasenia());
-            user.setRol(userExistente.getRol());
-        }
+    @PostMapping("/guardarUser")
+    public String guardarUser(User user, RedirectAttributes attributes) {
+        user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
             attributes.addFlashAttribute("msg_success", "Registro exitoso");
@@ -186,7 +177,6 @@ public class AdminController {
             return "redirect:/administrador/formUsuario";
         }
     }
-
     @PostMapping(path = "/guardarServicio")
     public String guadarServicio(Servicio servicio, Model model, RedirectAttributes attributes) {
         boolean respuesta = servicioService.crearServicio(servicio);

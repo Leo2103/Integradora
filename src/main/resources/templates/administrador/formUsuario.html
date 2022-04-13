@@ -18,6 +18,7 @@
                 <form th:action="@{/administrador/guardarCambios}" method="POST" th:object="${user}">
                     <div class="form-row">
                         <div class="form-group col">
+                            <input hidden th:field="*{id}">
                             <label>Nombre:</label>
                             <input class="form-control form-control-lg" type="text"
                                    placeholder="Ingresa el nombre del usuario" max="45" th:field="*{nombre}">
@@ -35,15 +36,15 @@
                             <div class="form-check">
                                 <label class="form-check-label mr-4">
                                     <input type="checkbox" class="form-check-input" name="tipoUsuario"
-                                           value="opcionAdministrador" checked>
+                                           value="opcionAdministrador"  >
                                     Administrador
                                 </label>
-                                <label class="form-check-label">
+                                <label class="form-check-label mr-4">
                                     <input type="checkbox" class="form-check-input" name="tipoUsuario"
                                            value="opcionVentanilla">
                                     Ventanilla
                                 </label>
-                                <label class="form-check-label">
+                                <label class="form-check-label mr-4">
                                     <input type="checkbox" class="form-check-input" name="tipoUsuario"
                                            value="opcionUser">
                                     Solicitante
@@ -51,6 +52,22 @@
                             </div>
                         </div>
                     </div>
+                    <label style="margin-top: 10px;">Estado</label>
+                    <div class="form-check" style="margin-bottom: 20px;">
+                        <input class="form-check-input" value="true" type="radio" th:field="*{enabled}"
+                               id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Habilitado
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="false" type="radio" th:field="*{enabled}"
+                               id="flexRadioDefault2">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Inhabilitado
+                        </label>
+                    </div>
+                    <br>
                     <div class="form-row">
                         <div class="form-group col">
                             <label>Correo Electronico:</label>
@@ -73,6 +90,7 @@
                                    required placeholder="12345">
                         </div>
                     </div>
+
 
                     <center>
                         <div class="form-row col-9">

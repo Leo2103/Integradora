@@ -11,20 +11,23 @@
             <big>
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" th:href="@{/administrador/consultarUsuarios}">Gestionar
-						usuarios</a>
-                    <a class="nav-item nav-link" tth:href="@{/administrador/consultarServicios}">Gestionar
-						servicios</a>
-<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="https://www.itcsystem.es/wp-content/uploads/2019/01/avatar-372-456324.png"
-						class="rounded-circle" height="30" alt="Perfil">&nbsp;
-					<span class="text-dark" th:if="${session.user != null}" th:text="'Hola ' + ${session.user.getNombre()}"></span>
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" th:href="@{/administrador/home}">Perfil</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" th:href="@{/administrador/logout}">Cerrar sesi�n</a>
-				</div>                </div>
+                        usuarios</a>
+                    <a class="nav-item nav-link" th:href="@{/administrador/consultarServicios}">Gestionar
+                        servicios</a>
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="https://www.itcsystem.es/wp-content/uploads/2019/01/avatar-372-456324.png"
+                             class="rounded-circle" height="30" alt="Perfil">&nbsp;
+                        <span class="text-dark" th:if="${session.user != null}"
+                              th:text="'Hola ' + ${session.user.getNombre()}"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/administrador/home}">Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/administrador/logout}">Cerrar sesi�n</a>
+                    </div>
+                </div>
             </big>
+        </div>
     </nav>
 </header>

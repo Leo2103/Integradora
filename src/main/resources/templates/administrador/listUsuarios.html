@@ -24,7 +24,6 @@
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellidos</th>
-                            <th scope="col">Rol</th>
                             <th scope="col">Estado</th>
                             <th colspan="3">Acciones</th>
                         </tr>
@@ -33,7 +32,6 @@
                         <tr th:each="tmpUser: ${listaUsuarios}">
                             <td>[[${tmpUser.nombre}]]</td>
                             <td>[[${tmpUser.apellidos}]]</td>
-                            <td th:text="${tmpUser.rol[0].authority}"></td>
                             <td th:text="${tmpUser.enabled == true} ? 'Habilitado' : 'Inhabilitado'"></td>
                             <td>
                                 <a th:href="@{/administrador/mostrarUsuario/{id}(id=${tmpUser.id})}" class="btn btn-info">

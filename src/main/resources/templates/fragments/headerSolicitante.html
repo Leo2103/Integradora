@@ -11,17 +11,20 @@
             <big>
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" th:href="@{/solicitante/listCitas}">Mis citas</a>
-<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="https://www.itcsystem.es/wp-content/uploads/2019/01/avatar-372-456324.png"
-						class="rounded-circle" height="30" alt="Perfil">&nbsp;
-					<span class="text-dark" th:if="${session.user != null}" th:text="'Hola ' + ${session.user.getNombre()}"></span>
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" th:href="@{/solicitante/home}">Perfil</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" th:href="@{/solicitante/logout}">Cerrar sesi�n</a>
-				</div>                </div>
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="https://www.itcsystem.es/wp-content/uploads/2019/01/avatar-372-456324.png"
+                             class="rounded-circle" height="30" alt="Perfil">&nbsp;
+                        <span class="text-dark" th:if="${session.user != null}"
+                              th:text="'Hola ' + ${session.user.getNombre()}"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/solicitante/home}">Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/solicitante/logout}">Cerrar sesi�n</a>
+                    </div>
+                </div>
             </big>
+        </div>
     </nav>
 </header>
