@@ -61,6 +61,7 @@ public class AdminController {
     public String gestionarUsuarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
         Page<User> listaUsuarios = userService
                 .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 5));
+
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "administrador/listUsuarios";
     }

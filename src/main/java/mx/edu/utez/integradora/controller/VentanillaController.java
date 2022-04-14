@@ -21,7 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping(value = "/ventanilla")
@@ -108,10 +110,9 @@ public class VentanillaController {
 
     @GetMapping(path = "/consultarHorarios")
     public String consultarHorarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable, Authentication auth) {
-        String username=auth.getName();
-        User usuario=userService.buscarCorreo(username);
-        long idSesion=usuario.getId();
-        //Por el momento dejarlo así no sé por que me esta protestando por el id
+        String username = auth.getName();
+        User usuario = userService.buscarCorreo(username);
+        Long idSesion = usuario.getId();
         model.addAttribute("listHorarios", horarioCitaService.listarTodos());
         return "ventanilla/listHorarios";
     }
@@ -124,19 +125,44 @@ public class VentanillaController {
     @PostMapping(path = "/guardarHorario")
     public String guardarHorario(
             @RequestParam("numRepeticiones") int numRepeticiones,
-            @RequestParam Date fecha,
-            @RequestParam Date horaInicio,
-            @RequestParam Date horaFin,
+            @RequestParam("fecha") Date fecha,
+            @RequestParam("horaInicio") Date horaInicio,
+            @RequestParam("horaFin") Date horaFin,
             @RequestParam("numVentanilla") int numV,
-            Authentication auth) {
+            Authentication auth, HorarioCita horarioCita) throws ParseException {
         String username = auth.getName();
         User userExist = userService.buscarCorreo(username);
-        int usuario= (int) userExist.getId();
-        boolean res = horarioCitaService.guardarHorario(fecha,horaInicio,horaFin,numV,numRepeticiones,usuario);
-        if (res){
-            return "redirect:/ventanilla/consultarHorarios";
-        }else {
-            return "redirect:/ventanilla/formHorario";
+        int usuario = (int) userExist.getId();
+
+
+        SimpleDateFormat formatFecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaIn = formatFecha.format(fecha);
+        Date fechaR = Date.valueOf(fechaIn);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        String hI = timeFormat.format(horaInicio);
+        Date horaI = Date.valueOf(hI);
+
+        String hF = timeFormat.format(horaFin);
+        Date horaF = Date.valueOf(hF);
+
+        /*
+        horarioCita.setFecha(String.valueOf(fechaR));
+        horarioCita.setHoraInicio(String.valueOf(horaI));
+        horarioCita.setHoraFin(String.valueOf(horaF));
+
+        String fechaR= String.valueOf(fecha);
+        String horaI= String.valueOf(horaInicio);
+        String horaF= String.valueOf(horaFin);
+       */
+        //boolean res= horarioCitaService.guardar(horarioCita);
+
+        boolean res = horarioCitaService.guardarHorario(fechaR, horaI, horaF, numV, numRepeticiones, usuario);
+        if (res) {
+            return "ventanilla/listHorarios";
+        } else {
+            return "ventanilla/formHorario";
         }
+
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface HorarioCitaRepository extends JpaRepository<HorarioCita, Long> {
-    List<HorarioCita> findByUser(long id);
+    List<HorarioCita> findByUser(Long id);
     @Procedure(procedureName = "registroHorario")
     boolean registroHorario(String fecha_in, String horaInicio_in , String horaFin_in , int numVentanilla_in , int repeticiones_in, int usuario );
 }

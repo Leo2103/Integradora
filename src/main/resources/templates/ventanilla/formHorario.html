@@ -1,100 +1,69 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Mis Citas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Registrar Horario</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!--Toast-->
-    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
 </head>
-
 <body>
-<div class="container-fluid" style="text-align: center;">
+<div class="container-fluid">
     <div th:insert="/fragments/headerVentanilla.html "></div>
     <div class="row">
-        <div class="col-12">
-            <div class="card mt-3">
-                <div class="card-body">
-                    <table class="table">
-                        <thead style="background-color: #008B8B;">
-                        <tr>
-                            <th scope="col">Tramite</th>
-                            <th scope="col">No.Ventanilla</th>
-                            <th scope="col">Documentos</th>
-                            <th scope="col">fecha</th>
-                            <th scope="col">Hora</th>
-                            <th scope="col">Costo</th>
-                            <th scope="col">Solicitante:</th>
-                            <th scope="col">Estado</th>
-                            <th colspan="3">Cancelar</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="tmpCita: ${listaCitas}">
-                            <td>[[${tmpCita.servicio.nombre}]]</td>
-                            <td>[[${tmpCita.ventanilla.numVentanilla}]]</td>
-                            <td>[[${tmpCita.documentoAnexos}]]</td>
-                            <td th:text="${#dates.format(tmpCita.fecha, 'dd-MM-yyyy')}"></td>
-                            <td>[[${tmpCita.hora}]]</td>
-                            <td>[[${tmpCita.servicio.costo}]]</td>
-                            <td>[[${tmpCita.solicitante.usuario.nombre}]]</td>
-                            <td>
-                                <div th:switch="${tmpCita.estatus}">
-                                    <div th:case="'agendada'">
-                                        <p class="text-muted"><span
-                                                class="badge badge-pill badge-success">Agendada</span></p>
-                                    </div>
-                                    <div th:case="'finalizada'">
-                                        <p lass="text-muted">
-                                            <span class="badge badge-pill badge-primary">Finalizada</span>
-                                        </p>
-                                    </div>
-                                    <div th:case="'cancelada'">
-                                        <p lass="text-muted">
-                                            <span class="badge badge-pill badge-danger">Cancelada</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/finalizar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-primary">
-                                    <ion-icon name="checkmark-circle-outline"></ion-icon>
-                                </a>
-                                <a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/cancelar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-danger">
-                                    <ion-icon name="thumbs-down"></ion-icon>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <nav th:if="${listaCitas.totalPages > 0}" aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item" th:classappend="${listaCitas.number == 0 ? 'disabled' : ''}">
-                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number - 1})}"
-                                   class="page-link">Anterior</a>
-                            </li>
+        <div class="col-2"></div>
+        <div class="col-8 card mt-3  shadow p-3 mb-5 bg-white rounded ">
+            <img class="mb-4" th:src="@{/images/logito.png}" width="200px" alt="">
+            <div class=" card-body">
+                <h2 class="mb-3">Registrar horario de atención </h2>
+                <form th:action="@{/ventanilla/guardarHorario}" method="POST" th:object="${horarioCita}">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Fecha:</label>
+                            <input class="form-control form-control-lg" type="date" name="fecha" th:field="*{fecha}">
+                        </div>
+                        <div class="form-group col">
+                            <label>Número de veces que desea repetir este horario:</label>
+                            <input type="number" name="numRepeticiones">
+                        </div>
+                    </div>
+                    <div class="form-row">
 
-                            <li class="page-item" th:classappend="${i eq listaCitas.number + 1} ? 'active'"
-                                th:each="i : ${#numbers.sequence( 1, listaCitas.totalPages, 1)}">
-                                <a class="page-link"
-                                   th:href="@{/solicitante/listCitas?page={tmpPag} (tmpPag=${i-1}) }"
-                                   th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
-                            </li>
-                            <li class="page-item"
-                                th:classappend="${listaCitas.number == (listaCitas.totalPages - 1) ? 'disabled' : ''}">
-                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number + 1})}"
-                                   class="page-link">Siguiente</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                        <div class="form-group col">
+                            <label>Hora inicio: </label>
+                            <input class="form-control form-control-lg" type="time" name="horaInicio"
+                                   th:field="*{horaInicio}">
+                        </div>
+
+                        <div class="form-group col">
+                            <label>Hora Fin: </label>
+                            <input class="form-control form-control-lg" type="time" name="horaFin"
+                                   th:field="*{horaFin}">
+                        </div>
+                        <div class="form-row">
+                            <label>Num ventanilla</label>
+                            <input type="number" name="numVentanilla">
+                        </div>
+                    </div>
+                    <center>
+                        <div class="form-row col-9">
+                            <a type="button" th:href="@{/ventanilla/consultarHorarios}"
+                               class="btn btn-secondary col m-3">Cancelar</a>
+                            <button type="submit" class="btn btn-primary col m-3" onclick="validarContrasena()">
+                                Registrar Horario
+                            </button>
+                        </div>
+                    </center>
+                </form>
             </div>
         </div>
+        <div class="col-2"></div>
     </div>
 </div>
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -105,5 +74,4 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

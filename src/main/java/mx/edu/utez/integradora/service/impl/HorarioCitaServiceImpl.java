@@ -21,8 +21,19 @@ public class HorarioCitaServiceImpl implements HorarioCitaService{
 	}
 
 	@Override
-	public List<HorarioCita> listarByUser(long id) {
+	public List<HorarioCita> listarByUser(Long id) {
 		return repository.findByUser(id);
+	}
+
+	@Override
+	public boolean guardar(HorarioCita horarioCita) {
+		try{
+			repository.save(horarioCita);
+			return true;
+		}catch (Exception e){
+			repository.save(horarioCita);
+		return false;
+		}
 	}
 
 	@Override
