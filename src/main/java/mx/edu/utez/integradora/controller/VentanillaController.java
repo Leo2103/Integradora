@@ -104,12 +104,15 @@ public class VentanillaController {
         model.addAttribute("listaCitas", listaCitas);
         return "redirect:/ventanilla/consultarCitas";
     }
+
+
     @GetMapping(path = "/consultarHorarios")
     public String consultarHorarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable, Authentication auth) {
         String username=auth.getName();
         User usuario=userService.buscarCorreo(username);
         long idSesion=usuario.getId();
-        model.addAttribute("listHorarios", horarioCitaService.listarByUser(idSesion));
+        //Por el momento dejarlo así no sé por que me esta protestando por el id
+        model.addAttribute("listHorarios", horarioCitaService.listarTodos());
         return "ventanilla/listHorarios";
     }
 
