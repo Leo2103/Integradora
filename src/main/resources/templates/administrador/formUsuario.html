@@ -15,7 +15,7 @@
             <img class="mb-4" th:src="@{/images/logito.png}" width="200px" alt="">
             <div class=" card-body">
                 <h2 class="mb-3">Registrar usuario </h2>
-                <form th:action="@{/administrador/guardarCambios}" method="POST" th:object="${user}">
+                <form th:action="@{/administrador/guardarUser}" method="POST" th:object="${user}">
                     <div class="form-row">
                         <div class="form-group col">
                             <input hidden th:field="*{id}">

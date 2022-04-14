@@ -136,35 +136,6 @@ public class AdminController {
         return "redirect:/administrador/consultarServicios";
     }
 
-    @PostMapping(path = "/guardarCambios")
-    public String guardarCambios(@RequestParam("tipoUsuario") String tipoUsuario, User user, RedirectAttributes attributes) {
-        User userExistente = userService.mostrar(user.getId());
-        if (userExistente == null) {
-            return "redirect:/administrador/formUsuario";
-        } else {
-            userExistente.setCorreo(user.getCorreo());
-            String contra = userExistente.getContrasenia();
-            String contraEncrip = passwordEncoder.encode(contra);
-            userExistente.setContrasenia(contraEncrip);
-            Role rol = null;
-            if (tipoUsuario.equals("opcionAdministrador")) {
-                rol = roleService.buscarAuthority("ROLE_ADMIN");
-            } else if (tipoUsuario.equals("opcionVentanilla")) {
-                rol = roleService.buscarAuthority("ROLE_VENTANILLA");
-            }else{
-                rol= roleService.buscarAuthority("ROLE_USER");
-            }
-            userExistente.agregarRole(rol);
-            boolean respuesta = userService.crearUser(user);
-            if (respuesta) {
-                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
-                return "redirect:/administrador/consultarUsuarios";
-            } else {
-                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
-                return "redirect:/administrador/editarUsuario/{id}";
-            }
-        }
-    }
     @PostMapping("/guardarUser")
     public String guardarUser(User user, RedirectAttributes attributes) {
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
