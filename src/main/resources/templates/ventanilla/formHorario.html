@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mis Citas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Toast-->
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+</head>
+
+<body>
+<div class="container-fluid" style="text-align: center;">
+    <div th:insert="/fragments/headerVentanilla.html "></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <table class="table">
+                        <thead style="background-color: #008B8B;">
+                        <tr>
+                            <th scope="col">Tramite</th>
+                            <th scope="col">No.Ventanilla</th>
+                            <th scope="col">Documentos</th>
+                            <th scope="col">fecha</th>
+                            <th scope="col">Hora</th>
+                            <th scope="col">Costo</th>
+                            <th scope="col">Solicitante:</th>
+                            <th scope="col">Estado</th>
+                            <th colspan="3">Cancelar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="tmpCita: ${listaCitas}">
+                            <td>[[${tmpCita.servicio.nombre}]]</td>
+                            <td>[[${tmpCita.ventanilla.numVentanilla}]]</td>
+                            <td>[[${tmpCita.documentoAnexos}]]</td>
+                            <td th:text="${#dates.format(tmpCita.fecha, 'dd-MM-yyyy')}"></td>
+                            <td>[[${tmpCita.hora}]]</td>
+                            <td>[[${tmpCita.servicio.costo}]]</td>
+                            <td>[[${tmpCita.solicitante.usuario.nombre}]]</td>
+                            <td>
+                                <div th:switch="${tmpCita.estatus}">
+                                    <div th:case="'agendada'">
+                                        <p class="text-muted"><span
+                                                class="badge badge-pill badge-success">Agendada</span></p>
+                                    </div>
+                                    <div th:case="'finalizada'">
+                                        <p lass="text-muted">
+                                            <span class="badge badge-pill badge-primary">Finalizada</span>
+                                        </p>
+                                    </div>
+                                    <div th:case="'cancelada'">
+                                        <p lass="text-muted">
+                                            <span class="badge badge-pill badge-danger">Cancelada</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/finalizar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-primary">
+                                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                </a>
+                                <a  th:href="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada' ? @{/ventanilla/cancelar/{id} (id=${tmpCita.idcita})} : '#'" th:disabled="${tmpCita.estatus} != 'cancelada' and ${tmpCita.estatus} != 'finalizada'" class="btn btn-outline-danger">
+                                    <ion-icon name="thumbs-down"></ion-icon>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav th:if="${listaCitas.totalPages > 0}" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${listaCitas.number == 0 ? 'disabled' : ''}">
+                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number - 1})}"
+                                   class="page-link">Anterior</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${i eq listaCitas.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, listaCitas.totalPages, 1)}">
+                                <a class="page-link"
+                                   th:href="@{/solicitante/listCitas?page={tmpPag} (tmpPag=${i-1}) }"
+                                   th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${listaCitas.number == (listaCitas.totalPages - 1) ? 'disabled' : ''}">
+                                <a th:href="@{/solicitante/listCitas(page=${listaCitas.number + 1})}"
+                                   class="page-link">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

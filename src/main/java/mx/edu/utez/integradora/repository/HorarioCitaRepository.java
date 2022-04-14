@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface HorarioCitaRepository extends JpaRepository<HorarioCita, Long> {
+    List<HorarioCita> findByUser(long id);
     @Procedure(procedureName = "registroHorario")
-    HorarioCita registroHorario(Date fecha_in, Time horaInicio_in , Time horaFin_in , int numVentanilla_in , int repeticiones_in );
+    boolean registroHorario(String fecha_in, String horaInicio_in , String horaFin_in , int numVentanilla_in , int repeticiones_in, int usuario );
 }

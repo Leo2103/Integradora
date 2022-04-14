@@ -4,10 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import mx.edu.utez.integradora.model.HorarioCita;
-import org.springframework.data.jpa.repository.query.Procedure;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface HorarioCitaService {
 	List<HorarioCita> listarTodos();
+	List<HorarioCita> listarByUser(long id);
+
+	boolean guardarHorario(Date fecha_in, Date horaInicio_in , Date horaFin_in , int numVentanilla_in , int repeticiones_in, int usuario );
+
 }
