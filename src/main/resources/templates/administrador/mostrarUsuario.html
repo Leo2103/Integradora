@@ -12,20 +12,20 @@
     <div th:insert="/fragments/headerAdmin.html "></div>
     <div class="row" style="display: flex">
         <div class="col-2"></div>
-        <div class="col-8" th:each="tmpServicio: ${servicio}">
+        <div class="col-8" th:each="tmpUser: ${user}">
             <div class="card m-3">
                 <div class="card-body">
-                    <h2 class="mb-3 mr-5 ml-5">Servicio Consultado</h2>
+                    <h2 class="mb-3 mr-5 ml-5" style="text-align: center" >Usuario Consultado </h2>
                     <div class="form-row">
                         <div class="col-2"></div>
                         <div class="form-group col">
-                            <label>Nombre del tramite:</label>
-                            <h4 th:text="${servicio.nombre}"></h4>
+                            <label>Nombre:</label>
+                            <h4 th:text="${tmpUser.nombre}"></h4>
                         </div>
 
                         <div class="form-group col">
-                            <label>Costo</label>
-                            <h4 th:text="${servicio.costo}"></h4>
+                            <label>Apellidos:</label>
+                            <h4 th:text="${tmpUser.apellidos}"></h4>
                         </div>
                         <div class="col-2"></div>
 
@@ -34,8 +34,8 @@
                     <div class="form-row">
                         <div class="col-2"></div>
                         <div class="form-group col-8">
-                            <label>Descripción</label>
-                            <h4 th:text="${servicio.descripcion}"></h4>
+                            <label>Correo:</label>
+                            <h4 th:text="${tmpUser.correo}"></h4>
                         </div>
                         <div class="col-2"></div>
 
@@ -44,8 +44,8 @@
                     <div class="form-row">
                         <div class="col-2"></div>
                         <div class="form-group col-8">
-                            <label>Documentos requeridos</label>
-                            <h4 th:text="${servicio.documentosRequeridos}"></h4>
+                            <label>Estado:</label>
+                            <h4 th:text="${tmpUser.enabled == true} ? 'Habilitado' : 'Inhabilitado'"</h4>
                         </div>
                         <div class="col-2"></div>
 
@@ -53,9 +53,9 @@
                 </div>
             </div>
             <center>
-            <div class="form-row col-4">
-                <a class="btn btn-secondary" th:href="@{/administrador/consultarServicios}">Regresar</a>
-            </div>
+                <div class="form-row col-4">
+                    <a class="btn btn-secondary" th:href="@{/administrador/consultarUsuarios}">Regresar</a>
+                </div>
             </center>
         </div>
         <div class="col-2"></div>

@@ -131,13 +131,22 @@ public class AdminController {
         User user = userService.mostrar(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "administrador/mostrarServicio";
+            return "administrador/mostrarUsuario";
         }
         return "redirect:/administrador/consultarServicios";
     }
 
     @PostMapping("/guardarUser")
-    public String guardarUser(User user, RedirectAttributes attributes) {
+    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario,User user, RedirectAttributes attributes) {
+        Role rol = null;
+        if (tipoUsuario.equals("opcionAdministrador")) {
+            rol = roleService.buscarAuthority("ROLE_ADMIN");
+        } else if (tipoUsuario.equals("opcionVentanilla")) {
+            rol = roleService.buscarAuthority("ROLE_VENTANILLA");
+        }else{
+            rol= roleService.buscarAuthority("ROLE_USER");
+        }
+        user.agregarRole(rol);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
