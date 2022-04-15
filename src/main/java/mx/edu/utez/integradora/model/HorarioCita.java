@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -22,6 +25,8 @@ public class HorarioCita implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idHorarioVentanilla;
 
+
+
 	@Column(name = "fecha")
 	private String fecha;
 
@@ -31,6 +36,8 @@ public class HorarioCita implements Serializable {
 	@Column(name = "hora_fin")
 	private String horaFin;
 
+	@Min(value = 1, message = "El numero de ventanilla debe ser mínimo 1")
+	@Max(value = 20,message = "El numero de ventanilla debe ser maximo 20")
 	@Column(name = "num_ventanilla")
 	private int numVentanilla;
 
