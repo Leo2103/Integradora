@@ -58,10 +58,6 @@ public class HomeController {
         return "login";
     }
 
-    @PostMapping(path = "/guardarSolicitante")
-    public String guardarSolicitante() {
-        return "";
-    }
     @GetMapping("/encriptar/{contrasena}")
     @ResponseBody
     public String encriptarContrasenas(@PathVariable("contrasena") String contrasena) {
@@ -71,46 +67,39 @@ public class HomeController {
     @PostMapping("/guardarSolicitante")
     public String guardarSolicitante(@RequestParam("matricula") String matricula,
                                      @RequestParam("telefono") String telefono,
-                                     @RequestParam("carrera") String Carrera,
+                                     @RequestParam("carrera") String carrera,
                                      @Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
-        Role rol= null;
+        Role rol = null;
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
 
-            for(ObjectError error: result.getAllErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
                 System.out.println("Error: " + error.getDefaultMessage());
             }
 
-            return "administrador/formUsuario";
         }
-        user.setEnabled(true);
+        user.setEnabled(1);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         rol = roleService.buscarAuthority("ROLE_USER");
         user.agregarRole(rol);
 
         Boolean respuesta = userService.crearUser(user);
-        if (respuesta!=null) {
-            System.out.println("usuario almacenado");
-
-        } else {
-            System.out.println("usuario no almacenado");;
+        if (respuesta != null) {
+            User registrado = userService.buscarCorreo(user.getCorreo());
+            Solicitante solicitante = new Solicitante();
+            solicitante.setUsuario(registrado);
+            solicitante.setCarrera(carrera);
+            solicitante.setMatricula(matricula);
+            solicitante.setTelefono(telefono);
+            solicitante.setUsuario(user);
+            boolean r = solicitanteService.crearSolicitante(solicitante);
+            if (respuesta != null) {
+                attributes.addFlashAttribute("msg_success", "Se ha registrado de manera exitosa");
+            } else {
+                System.out.println("Solicitante no almacenado");
+                attributes.addFlashAttribute("msg_success", "Registro erroneo");
+            }
         }
-        User registrado=userService.buscarCorreo(user.getCorreo());
-        Solicitante solicitante= new Solicitante();
-        solicitante.setUsuario(registrado);
-        solicitante.setCarrera(Carrera);
-        solicitante.setMatricula(matricula);
-        solicitante.setTelefono(telefono);
-        solicitante.setUsuario(user);
-        boolean r=solicitanteService.crearSolicitante(solicitante);
-        if (respuesta!=null) {
-            System.out.println("Solicitante almacenado");
-            attributes.addFlashAttribute("msg_success", "Se ha registrado de manera exitosa");
             return "redirect:/login";
-        } else {
-            System.out.println("Solicitante no almacenado");
-            attributes.addFlashAttribute("msg_success", "Registro erroneo");
-            return "redirect:/login";
-        }
     }
 }

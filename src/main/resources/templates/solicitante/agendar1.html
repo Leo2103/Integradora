@@ -2,52 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-	<title>Paso 1</title>
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Registrar CIta</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/menu.css}"/>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}"/>
+
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div th:insert="/fragments/headerSolicitante.html "></div>
+<div class="container-fluid">
+    <div th:insert="/fragments/headerSolicitante.html "></div>
 
-<br>
-		<div class="row">
-			<div class="col-12">
-				<h1>Paso 1 para agendar cita xd</h1>
-				<form th:action="@{/solicitante/guardarCita}" method="POST">
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label>Dia</label>
-                                <input class="form-control form-control-lg" type="date"
-                                       placeholder="Selecciona el dia">
-                            </div>
-							<div class="form-group col">
-								<label>Ventanilla</label>
-								<select class="form-control form-control-lg" >
-									<option th:each="tmpHorarioCita: ${listaHorariosCitas}" th:value="${tmpHorarioCita.idHorarioVentanilla}"
-										th:text="${tmpHorarioCita.numVentanilla}"></option>
-								</select>
-							</div>
-                           	
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <h1>Paso 1 para agendar cita xd</h1>
+            <form th:action="@{/solicitante/guardarCita}" method="POST">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Dia</label>
+                        <input class="form-control form-control-lg" type="date"
+                               placeholder="Selecciona el dia">
+                    </div>
+                    <div class="form-group col">
+                        <label>Ventanilla</label>
+                        <select class="form-control form-control-lg">
+                            <option th:each="tmpHorarioCita: ${listaHorariosCitas}"
+                                    th:value="${tmpHorarioCita.idHorarioVentanilla}"
+                                    th:text="${tmpHorarioCita.numVentanilla}"></option>
+                        </select>
+                    </div>
 
-                        </div>
-                  </form>
-			</div>
-<br>			
-			<div class="col-12">
-				<a type="button" class="btn btn-outline-secondary" 
-							th:href="@{/solicitante/agendar2}">Siguiente</a>
-			</div>
-			
-		</div>	
-	<script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-		</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+
+                </div>
+            </form>
+        </div>
+        <br>
+        <div class="col-12">
+            <a type="button" class="btn btn-outline-secondary"
+               th:href="@{/solicitante/agendar2}">Siguiente</a>
+        </div>
+
+    </div>
+    <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 
 </html>

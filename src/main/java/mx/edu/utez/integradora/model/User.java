@@ -32,11 +32,14 @@ public class User implements Serializable {
     @NotBlank
     @Size(min=2, max=50)
     private String apellidos;
+    @Column(nullable = false)
+    private long enabled;
     @Column(nullable = false, length = 45, unique = true)
     @NotBlank
     @Size(min=10, max=50)
     @Email
     private String correo;
+
     @NotBlank
     @Size(min=5, max=100)
     private String contrasenia;
