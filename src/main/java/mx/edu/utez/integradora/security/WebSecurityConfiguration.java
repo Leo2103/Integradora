@@ -33,12 +33,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(
-                "/css/**", "/js/**", "/image/**", "/images/**").permitAll()
+                        "/css/**", "/js/**", "/image/**", "/images/**").permitAll()
                 .antMatchers("/", "/login","/crear","/encriptar/**").permitAll()
                 .antMatchers("/administrador/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/ventanilla/**").hasAnyAuthority("ROLE_VENTANILLA", "ROLE_ADMIN")
                 .antMatchers("/solicitante/**").hasAnyAuthority("ROLE_USER")
-                .antMatchers("/", "/signup", "/encriptar/**", "/reset/password/**").permitAll()
+                .antMatchers("/", "/signup", "/encriptar/**", "/reset/password/**","/registrar","/guardarSolicitante").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().successHandler(successHandler).loginPage("/login").permitAll();
     }
@@ -49,3 +49,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 }
+
