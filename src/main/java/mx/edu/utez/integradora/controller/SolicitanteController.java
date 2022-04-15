@@ -1,6 +1,7 @@
 package mx.edu.utez.integradora.controller;
 
 import mx.edu.utez.integradora.model.Cita;
+import mx.edu.utez.integradora.model.Role;
 import mx.edu.utez.integradora.model.Solicitante;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
@@ -18,39 +19,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 
 @Controller
 @RequestMapping(value = "/solicitante")
 public class SolicitanteController {
-	   @Autowired
-	    private RoleServiceImpl roleService;
-	 @Autowired
-	    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private RoleServiceImpl roleService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private UserServiceImpl userService;
 	@Autowired
 	private SolicitanteServiceImpl solicitanteService;
 	@Autowired
 	private HorarioCitaServiceImpl HorarioCitaSercivesImplement;
-	
-	 @Autowired
-		CitaServiceImpl citaService;
-	
+
+	@Autowired
+	CitaServiceImpl citaService;
+
 	@GetMapping(path = "/home")
 	public String home(Model model, Authentication authentication, HttpSession session) {
-		
-		
+
+
 		User user= userService.buscarCorreo(authentication.getName());
-		session.setAttribute("user", user);			
+		session.setAttribute("user", user);
 		Solicitante solicitante = solicitanteService.buscarporUser(user);
 		model.addAttribute("user",user);
 		model.addAttribute("solicitante", solicitante);
@@ -69,49 +75,51 @@ public class SolicitanteController {
 	}
 
 	@GetMapping(path = "/cancelar/{id}")
-    public String cancelarCita(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
-        Cita respuesta = citaService.mostrar(id);
-        respuesta.setEstatus("cancelada");
-        citaService.crearCita(respuesta);
+	public String cancelarCita(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+		Cita respuesta = citaService.mostrar(id);
+		respuesta.setEstatus("cancelada");
+		citaService.crearCita(respuesta);
 		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6));
-        model.addAttribute("listaCitas", listaCitas);
+		model.addAttribute("listaCitas", listaCitas);
 		return "redirect:/solicitante/listCitas";
-    }
+	}
 
 	@GetMapping("/listCitas")
 	public String listarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
 		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6, Sort.by("fecha").descending()));
-        model.addAttribute("listaCitas", listaCitas);
+		model.addAttribute("listaCitas", listaCitas);
 		return "solicitante/listCitas";
-    }
-	  @PostMapping(path = "/cambiarContra")
-	    public String guardarCambios( User user, RedirectAttributes attributes) {
-	        User userExistente = userService.mostrar(user.getId());
-	        if (userExistente == null) {
-                return "redirect:/solicitante/home";
-	        } else {
-	            String contrar = user.getContrasenia();
-	            String contraEncrip = passwordEncoder.encode(contrar);
-	    		boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-		  		  System.out.println(contrar);
-		  		  System.out.println(contraEncrip);
-		  		  System.out.println(userExistente.getCorreo());
-	  		  System.out.println(respuestaCambio);
-	            if (respuestaCambio) {
-	                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
-	                return "redirect:/solicitante/home";
-	            } else {
-	                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
-	                return "redirect:/solicitante/home";
-	            }
-	        }
-	    }
+	}
+	@PostMapping(path = "/cambiarContra")
+	public String guardarCambios( User user, RedirectAttributes attributes) {
+		User userExistente = userService.mostrar(user.getId());
+		if (userExistente == null) {
+			return "redirect:/solicitante/home";
+		} else {
+			String contrar = user.getContrasenia();
+			String contraEncrip = passwordEncoder.encode(contrar);
+			boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
+			System.out.println(contrar);
+			System.out.println(contraEncrip);
+			System.out.println(userExistente.getCorreo());
+			System.out.println(respuestaCambio);
+			if (respuestaCambio) {
+				attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+				return "redirect:/solicitante/home";
+			} else {
+				attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+				return "redirect:/solicitante/home";
+			}
+		}
+	}
+
+
 	@GetMapping("/agendar1")
 	public String agendar1(Model model) {
 		model.addAttribute("listaHorariosCitas" ,HorarioCitaSercivesImplement.listarTodos());
 		return "solicitante/agendar1";
 	}
-	
+
 	@GetMapping("/agendar2")
 	public String agendar2() {
 		return "solicitante/agendar2";
@@ -120,5 +128,5 @@ public class SolicitanteController {
 	public String agendar3() {
 		return "solicitante/agendar3";
 	}
-	
+
 }

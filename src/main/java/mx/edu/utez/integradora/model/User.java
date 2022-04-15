@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,13 +25,22 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false, length = 45)
+    @NotBlank
+    @Size(min=2, max=50)
     private String nombre;
     @Column(nullable = false, length = 45)
+    @NotBlank
+    @Size(min=2, max=50)
     private String apellidos;
     @Column(nullable = false, length = 45, unique = true)
+    @NotBlank
+    @Size(min=10, max=50)
+    @Email
     private String correo;
+    @NotBlank
+    @Size(min=5, max=100)
     private String contrasenia;
-    private boolean enabled;
+    @NotNull
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> rol;

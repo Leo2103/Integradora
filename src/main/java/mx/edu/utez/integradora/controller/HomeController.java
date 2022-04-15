@@ -1,7 +1,9 @@
 package mx.edu.utez.integradora.controller;
 
+import mx.edu.utez.integradora.model.Role;
 import mx.edu.utez.integradora.model.Solicitante;
 import mx.edu.utez.integradora.model.User;
+import mx.edu.utez.integradora.service.impl.RoleServiceImpl;
 import mx.edu.utez.integradora.service.impl.SolicitanteServiceImpl;
 import mx.edu.utez.integradora.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 public class HomeController {
@@ -24,6 +25,8 @@ public class HomeController {
     UserServiceImpl userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleServiceImpl roleService;
 
     @GetMapping(path = "/")
     public String iniciar() {
@@ -65,4 +68,49 @@ public class HomeController {
         return contrasena + " encriptada con el algoritmo bcrypt: " + passwordEncoder.encode(contrasena);
     }
 
+    @PostMapping("/guardarSolicitante")
+    public String guardarSolicitante(@RequestParam("matricula") String matricula,
+                                     @RequestParam("telefono") String telefono,
+                                     @RequestParam("carrera") String Carrera,
+                                     @Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
+        Role rol= null;
+
+        if(result.hasErrors()) {
+
+            for(ObjectError error: result.getAllErrors()) {
+                System.out.println("Error: " + error.getDefaultMessage());
+            }
+
+            return "administrador/formUsuario";
+        }
+        user.setEnabled(true);
+        user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
+        rol = roleService.buscarAuthority("ROLE_USER");
+        user.agregarRole(rol);
+
+        Boolean respuesta = userService.crearUser(user);
+        if (respuesta!=null) {
+            System.out.println("usuario almacenado");
+
+        } else {
+            System.out.println("usuario no almacenado");;
+        }
+        User registrado=userService.buscarCorreo(user.getCorreo());
+        Solicitante solicitante= new Solicitante();
+        solicitante.setUsuario(registrado);
+        solicitante.setCarrera(Carrera);
+        solicitante.setMatricula(matricula);
+        solicitante.setTelefono(telefono);
+        solicitante.setUsuario(user);
+        boolean r=solicitanteService.crearSolicitante(solicitante);
+        if (respuesta!=null) {
+            System.out.println("Solicitante almacenado");
+            attributes.addFlashAttribute("msg_success", "Se ha registrado de manera exitosa");
+            return "redirect:/login";
+        } else {
+            System.out.println("Solicitante no almacenado");
+            attributes.addFlashAttribute("msg_success", "Registro erroneo");
+            return "redirect:/login";
+        }
+    }
 }

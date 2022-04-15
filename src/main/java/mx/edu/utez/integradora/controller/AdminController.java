@@ -148,15 +148,21 @@ public class AdminController {
     }
 
     @PostMapping("/guardarUser")
-    public String guardarUser(@Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
+    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, @Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors()) {
-
             for(ObjectError error: result.getAllErrors()) {
                 System.out.println("Error: " + error.getDefaultMessage());
             }
-
-            return "administrador/formUsuario";
         }
+        Role rol = null;
+        if (tipoUsuario.equals("opcionAdministrador")) {
+            rol = roleService.buscarAuthority("ROLE_ADMIN");
+        } else if (tipoUsuario.equals("opcionVentanilla")) {
+            rol = roleService.buscarAuthority("ROLE_VENTANILLA");
+        }else{
+            rol= roleService.buscarAuthority("ROLE_USER");
+        }
+        user.agregarRole(rol);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
