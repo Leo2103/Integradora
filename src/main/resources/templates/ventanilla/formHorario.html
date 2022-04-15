@@ -17,11 +17,11 @@
             <img class="mb-4" th:src="@{/images/logito.png}" width="200px" alt="">
             <div class=" card-body">
                 <h2 class="mb-3">Registrar horario de atención </h2>
-                <form th:action="@{/ventanilla/guardarHorario}" method="POST" th:object="${horarioCita}">
+                <form th:action="@{/ventanilla/guardarHorario}" method="POST">
                     <div class="form-row">
                         <div class="form-group col">
                             <label>Fecha:</label>
-                            <input class="form-control form-control-lg" type="date" name="fecha" th:field="*{fecha}">
+                            <input class="form-control form-control-lg" type="date" name="fecha">
                         </div>
                         <div class="form-group col">
                             <label>Número de veces que desea repetir este horario:</label>
@@ -32,14 +32,12 @@
 
                         <div class="form-group col">
                             <label>Hora inicio: </label>
-                            <input class="form-control form-control-lg" type="time" name="horaInicio"
-                                   th:field="*{horaInicio}">
+                            <input class="form-control form-control-lg" type="time" name="horaInicio">
                         </div>
 
                         <div class="form-group col">
                             <label>Hora Fin: </label>
-                            <input class="form-control form-control-lg" type="time" name="horaFin"
-                                   th:field="*{horaFin}">
+                            <input class="form-control form-control-lg" type="time" name="horaFin">
                         </div>
                         <div class="form-row">
                             <label>Num ventanilla</label>
@@ -50,7 +48,7 @@
                         <div class="form-row col-9">
                             <a type="button" th:href="@{/ventanilla/consultarHorarios}"
                                class="btn btn-secondary col m-3">Cancelar</a>
-                            <button type="submit" class="btn btn-primary col m-3" onclick="validarContrasena()">
+                            <button type="submit" class="btn btn-primary col m-3">
                                 Registrar Horario
                             </button>
                         </div>

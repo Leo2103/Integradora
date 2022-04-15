@@ -1,27 +1,45 @@
 package mx.edu.utez.integradora.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 
 @Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "horarioVentanilla")
 public class HorarioCita implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idHorarioVentanilla;
-    private String fecha;
-    private String horaInicio;
-    private String horaFin;
-    private int numVentanilla;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long idHorarioVentanilla;
+
+	@Column(name = "fecha")
+	private String fecha;
+
+	@Column(name = "hora_inicio")
+	private String horaInicio;
+
+	@Column(name = "hora_fin")
+	private String horaFin;
+
+	@Column(name = "num_ventanilla")
+	private int numVentanilla;
+
 	@ManyToOne
 	@JoinColumn(name = "usuario")
-	private User user;
+	private User usuario;
 
-    public HorarioCita(){
-
-    }
+	@OneToMany(mappedBy = "horarioCita")
+	private Set<Intervalo> intervalo;
 
 	@Override
 	public String toString() {
@@ -29,54 +47,5 @@ public class HorarioCita implements Serializable {
 				+ horaInicio + ", horaFin=" + horaFin + ", numVentanilla="
 				+ numVentanilla + "]";
 	}
-
-	public HorarioCita(long idHorarioVentanilla, String fecha, String horaInicio, String horaFin,int numVentanilla) {
-		this.idHorarioVentanilla = idHorarioVentanilla;
-		this.fecha = fecha;
-		this.horaInicio = horaInicio;
-		this.horaFin = horaFin;
-		this.numVentanilla = numVentanilla;
-	}
-
-	public long getIdHorarioVentanilla() {
-		return idHorarioVentanilla;
-	}
-
-	public void setIdHorarioVentanilla(long idHorarioVentanilla) {
-		this.idHorarioVentanilla = idHorarioVentanilla;
-	}
-
-	public String getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
-
-	public String getHoraInicio() {
-		return horaInicio;
-	}
-
-	public void setHoraInicio(String horaInicio) {
-		this.horaInicio = horaInicio;
-	}
-
-	public String getHoraFin() {
-		return horaFin;
-	}
-
-	public void setHoraFin(String horaFin) {
-		this.horaFin = horaFin;
-	}
-
-	public int getNumVentanilla() {
-		return numVentanilla;
-	}
-
-	public void setNumVentanilla(int numVentanilla) {
-		this.numVentanilla = numVentanilla;
-	}
-
    
 }

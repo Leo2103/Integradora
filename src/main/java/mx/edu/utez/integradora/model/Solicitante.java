@@ -1,9 +1,18 @@
 package mx.edu.utez.integradora.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "solicitante")
 public class Solicitante implements Serializable {
     @Id
@@ -15,43 +24,5 @@ public class Solicitante implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idUsuario")
     private User usuario;
-    public Solicitante(){}
-    public Solicitante(String carrera, String telefono, User usuario) {
-        this.carrera = carrera;
-        this.telefono = telefono;
-        this.usuario = usuario;
-    }
 
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public User getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(User usuario) {
-        this.usuario = usuario;
-    }
 }

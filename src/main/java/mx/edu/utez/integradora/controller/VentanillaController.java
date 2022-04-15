@@ -5,6 +5,7 @@ import mx.edu.utez.integradora.model.HorarioCita;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
 import mx.edu.utez.integradora.service.impl.HorarioCitaServiceImpl;
+import mx.edu.utez.integradora.service.impl.IntervaloServiceImpl;
 import mx.edu.utez.integradora.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,11 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 @Controller
 @RequestMapping(value = "/ventanilla")
@@ -37,6 +34,8 @@ public class VentanillaController {
     private UserServiceImpl userService;
     @Autowired
     private HorarioCitaServiceImpl horarioCitaService;
+    @Autowired
+    private IntervaloServiceImpl intervaloService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -57,10 +56,6 @@ public class VentanillaController {
             String contrar = user.getContrasenia();
             String contraEncrip = passwordEncoder.encode(contrar);
             boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-            System.out.println(contrar);
-            System.out.println(contraEncrip);
-            System.out.println(userExistente.getCorreo());
-            System.out.println(respuestaCambio);
             if (respuestaCambio) {
                 attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
                 return "redirect:/ventanilla/home";
@@ -76,9 +71,9 @@ public class VentanillaController {
         try {
             SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
             logoutHandler.logout(request, null, null);
-//			redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
+            redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
         } catch (Exception e) {
-//			redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
+            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al cerrar la sesión, intenta de nuevo.");
         }
         return "/login";
     }
@@ -110,7 +105,6 @@ public class VentanillaController {
         return "redirect:/ventanilla/consultarCitas";
     }
 
-
     @GetMapping(path = "/consultarHorarios")
     public String consultarHorarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable, Authentication auth) {
         String username = auth.getName();
@@ -127,49 +121,16 @@ public class VentanillaController {
 
     @PostMapping(path = "/guardarHorario")
     public String guardarHorario(
-            @RequestParam(name = "numRepeticiones") int numRepeticiones,
-            @RequestParam(name = "fecha", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) java.util.Date fecha,
-            @RequestParam(name = "horaInicio", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") String horaInicio,
-            @RequestParam(name = "horaFin", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") String horaFin,
-            @RequestParam(name = "numVentanilla") int numV,
-            Authentication auth, HorarioCita horarioCita) throws ParseException {
+            @RequestParam(name = "numRepeticiones", required = true) int numRepeticiones,
+            @RequestParam(name = "fecha", required = true, defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) java.util.Date fecha,
+            @RequestParam(name = "horaInicio", required = true, defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") Date horaInicio,
+            @RequestParam(name = "horaFin", required = true, defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") Date horaFin,
+            @RequestParam(name = "numVentanilla", required = true) int numV,
+            Authentication auth, HorarioCita horarioCita) {
         String username = auth.getName();
         User userExist = userService.buscarCorreo(username);
-
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        Date result;
-        try {
-            result = df.parse(horaInicio);
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-        /* SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaIn = formatFecha.format(fecha);
-        Date fechaR = Date.valueOf(fechaIn);
-
-        Date horaF = Date.valueOf(hF);
-        horarioCita.setFecha(String.valueOf(fechaR));
-        horarioCita.setHoraInicio(String.valueOf(horaI));
-        horarioCita.setHoraFin(String.valueOf(horaF));
-        String fechaR= String.valueOf(fecha);
-        String horaI= String.valueOf(horaInicio);
-        String horaF= String.valueOf(horaFin);
-       */
-        boolean res= horarioCitaService.guardar(horarioCita);
-        //boolean res = horarioCitaService.guardarHorario(fecha, horaInicio, horaFin, numV, numRepeticiones, usuario);
-        if (res) {
-            System.out.println(fecha + "\n" + horaInicio + "\n" + horaFin);
-            return "ventanilla/listHorarios";
-        } else {
-            System.out.println(fecha + "\n" + horaInicio + "\n" + horaFin);
-            return "ventanilla/formHorario";
-        }
-
+        long idSesion = userExist.getId();
+        horarioCitaService.guardarHorario(fecha, horaInicio, horaFin, numV, numRepeticiones, idSesion);
+        return "redirect:/ventanilla/consultarHorarios";
     }
 }
