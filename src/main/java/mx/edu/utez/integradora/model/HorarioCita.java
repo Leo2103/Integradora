@@ -2,11 +2,12 @@ package mx.edu.utez.integradora.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "horarioVentanilla")
-public class HorarioCita {
+public class HorarioCita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idHorarioVentanilla;

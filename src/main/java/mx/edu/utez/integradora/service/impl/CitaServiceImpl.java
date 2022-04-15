@@ -39,7 +39,6 @@ public class CitaServiceImpl implements CitaService {
     public boolean eliminarCita(long id) {
         boolean exist= repository.existsById(id);
         if (exist){
-        	Optional<Cita> obj = repository.findById(id);
             repository.deleteById(id);
             return !repository.existsById(id);
         }

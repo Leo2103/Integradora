@@ -74,10 +74,7 @@ public class AdminController {
             String contrar = user.getContrasenia();
             String contraEncrip = passwordEncoder.encode(contrar);
     		boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-	  		  System.out.println(contrar);
-	  		  System.out.println(contraEncrip);
-	  		  System.out.println(userExistente.getCorreo());
-  		  System.out.println(respuestaCambio);
+
             if (respuestaCambio) {
                 attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
                 return "redirect:/administrador/home";

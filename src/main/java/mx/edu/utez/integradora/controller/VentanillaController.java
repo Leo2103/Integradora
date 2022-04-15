@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,9 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping(value = "/ventanilla")
@@ -124,43 +127,47 @@ public class VentanillaController {
 
     @PostMapping(path = "/guardarHorario")
     public String guardarHorario(
-            @RequestParam("numRepeticiones") int numRepeticiones,
-            @RequestParam("fecha") Date fecha,
-            @RequestParam("horaInicio") Date horaInicio,
-            @RequestParam("horaFin") Date horaFin,
-            @RequestParam("numVentanilla") int numV,
+            @RequestParam(name = "numRepeticiones") int numRepeticiones,
+            @RequestParam(name = "fecha", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) java.util.Date fecha,
+            @RequestParam(name = "horaInicio", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") String horaInicio,
+            @RequestParam(name = "horaFin", defaultValue = "#{ new java.util.Date() }") @DateTimeFormat(pattern = "HH:mm") String horaFin,
+            @RequestParam(name = "numVentanilla") int numV,
             Authentication auth, HorarioCita horarioCita) throws ParseException {
         String username = auth.getName();
         User userExist = userService.buscarCorreo(username);
-        int usuario = (int) userExist.getId();
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        Date result;
+        try {
+            result = df.parse(horaInicio);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-        SimpleDateFormat formatFecha = new SimpleDateFormat("yyyy-MM-dd");
+
+        /* SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String fechaIn = formatFecha.format(fecha);
         Date fechaR = Date.valueOf(fechaIn);
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        String hI = timeFormat.format(horaInicio);
-        Date horaI = Date.valueOf(hI);
-
-        String hF = timeFormat.format(horaFin);
         Date horaF = Date.valueOf(hF);
-
-        /*
         horarioCita.setFecha(String.valueOf(fechaR));
         horarioCita.setHoraInicio(String.valueOf(horaI));
         horarioCita.setHoraFin(String.valueOf(horaF));
-
         String fechaR= String.valueOf(fecha);
         String horaI= String.valueOf(horaInicio);
         String horaF= String.valueOf(horaFin);
        */
-        //boolean res= horarioCitaService.guardar(horarioCita);
-
-        boolean res = horarioCitaService.guardarHorario(fechaR, horaI, horaF, numV, numRepeticiones, usuario);
+        boolean res= horarioCitaService.guardar(horarioCita);
+        //boolean res = horarioCitaService.guardarHorario(fecha, horaInicio, horaFin, numV, numRepeticiones, usuario);
         if (res) {
+            System.out.println(fecha + "\n" + horaInicio + "\n" + horaFin);
             return "ventanilla/listHorarios";
         } else {
+            System.out.println(fecha + "\n" + horaInicio + "\n" + horaFin);
             return "ventanilla/formHorario";
         }
 
