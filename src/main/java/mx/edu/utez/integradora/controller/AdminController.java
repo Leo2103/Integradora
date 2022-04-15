@@ -177,12 +177,11 @@ public class AdminController {
     public String guadarServicio(@Valid @ModelAttribute("servicio") Servicio servicio,BindingResult result, RedirectAttributes attributes) {
 
         if(result.hasErrors()) {
-
             for(ObjectError error: result.getAllErrors()) {
                 System.out.println("Error: " + error.getDefaultMessage());
             }
             attributes.addFlashAttribute("msg_error", "Registro fallido");
-            return "redirect:/administrador/formServicio";
+            return "administrador/formServicio";
         }
         boolean respuesta = servicioService.crearServicio(servicio);
         if (respuesta) {
