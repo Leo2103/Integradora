@@ -143,9 +143,10 @@ public class AdminController {
         return "administrador/formUsuario";
     }
 
-    @GetMapping(path = "/eliminarUsuario/{id}")
-    public String eliminarUsuario(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-        boolean respuesta = userService.eliminarUser(id);
+    @PostMapping(path = "/eliminarUsuario")
+    public String eliminarUsuario(User user, RedirectAttributes redirectAttributes) {
+        User userExist = userService.mostrar(user.getId());
+        boolean respuesta = userService.eliminarUser(userExist.getId());
         if (respuesta) {
             redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
         } else {
@@ -214,10 +215,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping(path = "/eliminarServicio/{id}")
-    public String eliminarServicio(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-
-        boolean respuesta = servicioService.eliminarServicio(id);
+    @PostMapping(path = "/eliminarServicio")
+    public String eliminarServicio(Servicio servicio, RedirectAttributes redirectAttributes) {
+        Servicio servicioExist = servicioService.mostrar(servicio.getId());
+        boolean respuesta = servicioService.eliminarServicio(servicioExist.getId());
         if (respuesta) {
             redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
         } else {
