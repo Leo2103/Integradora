@@ -33,7 +33,7 @@ public class User implements Serializable {
     @Size(min=2, max=50)
     private String apellidos;
     @Column(nullable = false)
-    private long enabled;
+    private boolean enabled;
     @Column(nullable = false, length = 45, unique = true)
     @NotBlank
     @Size(min=10, max=50)

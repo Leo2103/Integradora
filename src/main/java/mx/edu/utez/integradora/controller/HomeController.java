@@ -35,22 +35,8 @@ public class HomeController {
 
     //este lo veo mas a nivel de home es decir mover la vista a un nivel general
     @GetMapping(path = "/registrar")
-    public String registrarSolicitante(Solicitante solicitante, BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()) {
-
-            for(ObjectError error: result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
-            }
-            attributes.addFlashAttribute("msg_error", "Registro fallido");
-            return "redirect:/administrador/formServicio";
-        }
-        boolean respuesta = solicitanteService.crearSolicitante(solicitante);
-        if (respuesta) {
-            attributes.addFlashAttribute("msg_success", "Registro exitoso");
-            return "redirect:/administrador/consultarServicios";
-        } else {
-            return "redirect:/administrador/formServicio";
-        }
+    public String registrarSolicitante(User user) {
+        return "formSolicitante";
     }
 
     @GetMapping(path = "/login")
@@ -78,7 +64,7 @@ public class HomeController {
             }
 
         }
-        user.setEnabled(1);
+        user.setEnabled(true);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         rol = roleService.buscarAuthority("ROLE_USER");
         user.agregarRole(rol);
