@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
         	repository.updatePassword(password, username);
             return true;
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
             exception.printStackTrace();
             return false;
         }

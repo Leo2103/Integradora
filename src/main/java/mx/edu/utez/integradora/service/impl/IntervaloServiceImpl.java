@@ -1,6 +1,5 @@
 package mx.edu.utez.integradora.service.impl;
 
-import mx.edu.utez.integradora.model.Cita;
 import mx.edu.utez.integradora.model.Intervalo;
 import mx.edu.utez.integradora.repository.IntervaloRepository;
 import mx.edu.utez.integradora.service.IntervaloService;

@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -71,12 +73,11 @@ public class HomeController {
                                      @Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
         Role rol = null;
 
-        if (result.hasErrors()) {
-
-            for (ObjectError error : result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
+        if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
+            for(ObjectError error: result.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
             }
-
         }
         user.setEnabled(true);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
@@ -96,7 +97,6 @@ public class HomeController {
             if (respuesta != null) {
                 attributes.addFlashAttribute("msg_success", "Se ha registrado de manera exitosa");
             } else {
-                System.out.println("Solicitante no almacenado");
                 attributes.addFlashAttribute("msg_success", "Registro erroneo");
             }
         }

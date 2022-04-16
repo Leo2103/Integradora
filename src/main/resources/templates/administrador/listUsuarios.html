@@ -44,9 +44,44 @@
                                 </a>
                             </td>
                             <td>
-                                <a th:href="@{/administrador/eliminarUsuario/{id}(id=${tmpUser.id})}" class="btn btn-danger">
+                                <button type="button" class="btn btn-danger"
+                                        data-toggle="modal"
+                                        th:attr="data-target='#exampleModalCenter'+*{tmpUser.id}">
                                     <ion-icon name="trash"></ion-icon>
-                                </a>
+                                </button> <!-- Modal -->
+
+                                <div class="modal fade"
+                                     th:id="*{'exampleModalCenter'+{tmpUser.id}}" tabindex="-1"
+                                     role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                     aria-hidden="true" >
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">¿Desea eliminar el
+                                                    usuario?</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form th:action="@{/administrador/eliminarUsuario}" method="post">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-secondary m-3"
+                                                                data-dismiss="modal">Cancelar
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger m-3">Borrar</button>
+                                                        <input type="hidden"
+                                                               th:value="*{tmpUser.id}"
+                                                               class="form-control" name="id">
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                         </tbody>

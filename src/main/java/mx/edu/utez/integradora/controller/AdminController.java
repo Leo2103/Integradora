@@ -143,9 +143,10 @@ public class AdminController {
         return "administrador/formUsuario";
     }
 
-    @GetMapping(path = "/eliminarUsuario/{id}")
-    public String eliminarUsuario(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-        boolean respuesta = userService.eliminarUser(id);
+    @PostMapping(path = "/eliminarUsuario")
+    public String eliminarUsuario(User user, RedirectAttributes redirectAttributes) {
+        User userExist = userService.mostrar(user.getId());
+        boolean respuesta = userService.eliminarUser(userExist.getId());
         if (respuesta) {
             redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
         } else {
@@ -175,16 +176,22 @@ public class AdminController {
     }
 
     @PostMapping("/guardarUser")
-    public String guardarUser(@Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
+    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, @Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors()) {
             List<String> errores = new ArrayList<>();
             for(ObjectError error: result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
-            attributes.addFlashAttribute("msg_error", "Registro fallido");
-            return "administrador/formUsuario";
         }
-
+        Role rol = null;
+        if (tipoUsuario.equals("opcionAdministrador")) {
+            rol = roleService.buscarAuthority("ROLE_ADMIN");
+        } else if (tipoUsuario.equals("opcionVentanilla")) {
+            rol = roleService.buscarAuthority("ROLE_VENTANILLA");
+        }else{
+            rol= roleService.buscarAuthority("ROLE_USER");
+        }
+        user.agregarRole(rol);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
@@ -195,6 +202,7 @@ public class AdminController {
             return "redirect:/administrador/formUsuario";
         }
     }
+
     @PostMapping(path = "/guardarServicio")
     public String guadarServicio(@Valid @ModelAttribute("servicio") Servicio servicio,BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors()) {
@@ -214,10 +222,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping(path = "/eliminarServicio/{id}")
-    public String eliminarServicio(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-
-        boolean respuesta = servicioService.eliminarServicio(id);
+    @PostMapping(path = "/eliminarServicio")
+    public String eliminarServicio(Servicio servicio, RedirectAttributes redirectAttributes) {
+        Servicio servicioExist = servicioService.mostrar(servicio.getId());
+        boolean respuesta = servicioService.eliminarServicio(servicioExist.getId());
         if (respuesta) {
             redirectAttributes.addFlashAttribute("msg_success", "Eliminacion exitosa");
         } else {

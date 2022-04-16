@@ -1,7 +1,6 @@
 package mx.edu.utez.integradora.controller;
 
 import mx.edu.utez.integradora.model.Cita;
-import mx.edu.utez.integradora.model.Role;
 import mx.edu.utez.integradora.model.Solicitante;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -68,9 +66,9 @@ public class SolicitanteController {
 		try {
 			SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 			logoutHandler.logout(request, null, null);
-			//redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
+			redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
 		} catch (Exception e) {
-			//redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
+			redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
 		}
 		return "/login";
 	}

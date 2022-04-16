@@ -52,25 +52,18 @@ public class RecoverPasswordController {
 		username = username.replaceAll("[\\s]", "");
 		// Create new password with 12 characters
 		String nuevaContrasena = generarContrasena(12);
-		System.out.println(nuevaContrasena);
-
 		// Encoder password
 		String contrasenaEncriptada = passwordEncoder.encode(nuevaContrasena);
 		// Search user_name
 		User user = userServiceImpl.buscarCorreo(username);
-			System.out.println(user.getNombre());
 		// Update password
 		boolean respuestaCambio = userServiceImpl.cambiarContrasena(contrasenaEncriptada, user.getCorreo());
-		System.out.println(respuestaCambio);
-
 		// Get full user_name
 		String nombreUsuario = user.getNombre().concat(" ").concat(user.getApellidos());
 		// Create email content
 		String htmlContent = plantillaRecuperacionContrasena(nombreUsuario, user.getCorreo(), nuevaContrasena);
 		// Send message
-		System.out.println(user.getCorreo());
 		boolean respuestaEmail = emailServiceImpl.sendEmail(user.getCorreo(), "Cambio de contraseña", htmlContent);
-		System.out.println(respuestaEmail);
 		if (respuestaCambio && respuestaEmail) {
 			redirectAttributes.addFlashAttribute("msg_success",
 					"Correo de recuperación de contraseña enviado, por favor revisa tu bandeja de correo.");

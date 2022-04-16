@@ -112,9 +112,9 @@ public class VentanillaController {
         try {
             SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
             logoutHandler.logout(request, null, null);
-//			redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
+			redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
         } catch (Exception e) {
-//			redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
+			redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
         }
         return "/login";
     }
