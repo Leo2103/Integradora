@@ -10,6 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <big>
                 <div class="navbar-nav">
+                    <a class="nav-item nav-link" th:href="@{/ventanilla/home}">Home</a>
                     <a class="nav-item nav-link" th:href="@{/ventanilla/consultarCitas}">Consultar citas</a>
                     <a class="nav-item nav-link" th:href="@{/ventanilla/consultarHorarios}">Gestion Horario</a>
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
@@ -20,9 +21,9 @@
                               th:text="'Hola ' + ${session.user.getNombre()}"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/ventanilla/home}">Perfil</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{/ventanilla/logout}">Cerrar sesión</a>
+                        <div class="dropdown-divider"></div>
                     </div>
                 </div>
             </big>

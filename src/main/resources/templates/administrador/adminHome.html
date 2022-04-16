@@ -2,13 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Inicio</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/menu.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 
 <body>
@@ -21,43 +18,43 @@
         <div class="col-6" >
             <div class="card m-3">
                 <div class="card-body">
-                    <h2 class="mb-3 mr-5 ml-5 text-muted" th:text="${user.getNombre()}"></h2>
+                    <h2 class="mb-3 mr-2 ml-2 text-muted" th:text="${session.user.getNombre()}"></h2>
                     <div class="form-row">
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                         <div class="form-group col-3">
                             <label class="text-muted">Apellidos:</label>
                         </div>
-                        <div class="form-group col-5">
-                            <h4 class="text-primary" th:text="${user.getApellidos()}"></h4>
+                        <div class="form-group col-7">
+                            <h4 class="text-primary" th:text="${session.user.getApellidos()}"></h4>
                         </div>
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                     </div>
                     <div class="form-row">
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                         <div class="form-group col-3">
                             <label class="text-muted">Rol:</label>
                         </div>
-                        <div class="form-group col-5">
+                        <div class="form-group col-7">
                             <h4 class="text-primary" th:text="Administrador"></h4>
                         </div>
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                     </div>
                     <div class="form-row">
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                         <div class="form-group col-3">
                             <label class="text-muted">Email:</label>
                         </div>
-                        <div class="form-group col-5">
-                            <h4 class="text-primary" th:text="${user.getCorreo()}"></h4>
+                        <div class="form-group col-7">
+                            <h4 class="text-primary" th:text="${session.user.getCorreo()}"></h4>
                         </div>
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-4">
             <div class="card-body">
-                <h2 class="mb-3" style="align-content: center">Cambiar Contraseña</h2>
+                <h2 class="mb-3 text-muted" style="align-content: center">Cambiar Contraseña</h2>
                 <form th:action="@{/administrador/cambiarContra}" method="POST" th:object="${user}">
                     <div class="form-row">
                         <label>Nueva Contraseña<span class="text-danger">*</span></label>
@@ -65,9 +62,7 @@
                                type="password" max="10" id="contrasenia" name="contrasenia" required
                                th:field="*{contrasenia}"
                                placeholder="12345">
-                        <div th:if="${#fields.hasErrors('contrasenia')}" th:error="*{contrasenia}" class="alert alert-danger">
-                            La contraseña no debe ser nula ni tener menos de 5 caracteres
-                        </div>
+
                     </div>
                     <div class="form-row">
 
@@ -75,6 +70,9 @@
                         <input class="form-control form-control-lg" onchange="validarContrasena()"
                                type="password" max="10" id="confirmarContrasena" name="confirmarContrasena"
                                required placeholder="12345">
+                    </div>
+                    <div th:if="${#fields.hasErrors('contrasenia')}" th:error="*{contrasenia}" class="alert alert-danger">
+                        La contraseña no debe ser nula ni tener menos de 5 caracteres
                     </div>
                     <input hidden type="number" name="id"  th:field="*{id}">
                     <input hidden  name="apellidos"  th:field="*{apellidos}">
@@ -90,6 +88,53 @@
             </form>
         </div>
     </div>
+    <div class="row" style="display: flex">
+
+        <div class="col-2"></div>
+        <div class="card col-8">
+            <form class="card-body" th:action="@{/administrador/cambiarInfo}" method="POST" th:object="${user}">
+                <h2 class="mb-3 text-muted" style="align-content: center">Informacion Personal</h2>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <input hidden th:field="*{id}">
+                        <label>Nombre: (*)</label>
+                        <input class="form-control form-control-lg" type="text" name="nombre"
+                               placeholder="Ingresa el nombre del usuario" max="45" th:field="*{nombre}">
+
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Apellido: (*)</label>
+                        <input class="form-control form-control-lg" type="text" name="qpellidos"
+                               placeholder="Ingresa los apellidos del usuario" max="45" th:field="*{apellidos}">
+
+                    </div>
+
+                </div>
+                <div th:if="${#fields.hasErrors('nombre')}" th:error="*{nombre}" class="alert alert-danger">
+                    El nombre es requerido y debe tener mas de 2 caracteres, no se aceptan caracteres especiales</div>
+                <div th:if="${#fields.hasErrors('apellidos')}" th:error="*{apellidos}" class="alert alert-danger">
+                    El(los) apellido(s) son requeridos y deben tener mas de 2 caracteres, no se aceptan caracteres especiales</div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Correo Electronico: (*)</label>
+                        <input class="form-control form-control-lg" type="email"
+                               placeholder="Ingresa el correo  electrónico" max="45" name="correo" th:field="*{correo}">
+                        <div th:if="${#fields.hasErrors('correo')}" th:error="*{correo}" class="alert alert-danger">
+                            El correo no debe ser nulo, debe tener minimo 10 caracteres y mantener formato E-mail</div>
+                    </div>
+                </div>
+                <input hidden th:field="*{id}">
+                <input hidden  name="contrasenia"  th:field="*{contrasenia}">
+                <input hidden  name="enabled"  th:field="*{enabled}">
+                <div class="form-row">
+                    <button type="submit" id="registrar cambios" class="btn btn-muted col m-3">Modificar Información</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
 </div>
 </div>
 

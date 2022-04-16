@@ -21,6 +21,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -70,9 +73,9 @@ public class AdminController {
     @PostMapping(path = "/cambiarContra")
     public String guardarCambios(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors()) {
-
+            List<String> errores = new ArrayList<>();
             for(ObjectError error: result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
+                errores.add(error.getDefaultMessage());
             }
 
             return "administrador/adminHome";
@@ -84,10 +87,34 @@ public class AdminController {
             String contrar = user.getContrasenia();
             String contraEncrip = passwordEncoder.encode(contrar);
             boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-            System.out.println(contrar);
-            System.out.println(contraEncrip);
-            System.out.println(userExistente.getCorreo());
-            System.out.println(respuestaCambio);
+            if (respuestaCambio) {
+                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+                return "redirect:/administrador/home";
+            } else {
+                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+                return "redirect:/administrador/home";
+            }
+        }
+    }
+
+    @PostMapping(path = "/cambiarInfo")
+    public String cambiarInfo(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
+        if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
+            for(ObjectError error: result.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+
+            return "administrador/adminHome";
+        }
+        User userExistente = userService.mostrar(user.getId());
+        userExistente.setCorreo(user.getCorreo());
+        userExistente.setNombre(user.getNombre());
+        userExistente.setApellidos(user.getApellidos());
+        if (userExistente == null) {
+            return "redirect:/administrador/home";
+        } else {
+            boolean respuestaCambio = userService.crearUser(userExistente);
             if (respuestaCambio) {
                 attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
                 return "redirect:/administrador/home";
@@ -148,21 +175,16 @@ public class AdminController {
     }
 
     @PostMapping("/guardarUser")
-    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, @Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
+    public String guardarUser(@Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
             for(ObjectError error: result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
+                errores.add(error.getDefaultMessage());
             }
+            attributes.addFlashAttribute("msg_error", "Registro fallido");
+            return "administrador/formUsuario";
         }
-        Role rol = null;
-        if (tipoUsuario.equals("opcionAdministrador")) {
-            rol = roleService.buscarAuthority("ROLE_ADMIN");
-        } else if (tipoUsuario.equals("opcionVentanilla")) {
-            rol = roleService.buscarAuthority("ROLE_VENTANILLA");
-        }else{
-            rol= roleService.buscarAuthority("ROLE_USER");
-        }
-        user.agregarRole(rol);
+
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
@@ -175,10 +197,10 @@ public class AdminController {
     }
     @PostMapping(path = "/guardarServicio")
     public String guadarServicio(@Valid @ModelAttribute("servicio") Servicio servicio,BindingResult result, RedirectAttributes attributes) {
-
         if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
             for(ObjectError error: result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
+                errores.add(error.getDefaultMessage());
             }
             attributes.addFlashAttribute("msg_error", "Registro fallido");
             return "administrador/formServicio";

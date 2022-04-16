@@ -25,43 +25,33 @@
                 font-size: 3.5rem;
             }
         }
-        
-        body {
-  background-color: #E8EFEC;
-}
 
-     navbar {
-  background-color: black;
-}
+        body {
+            background-color: #E8EFEC;
+        }
+
+        navbar {
+            background-color: black;
+        }
     </style>
 
 </head>
 
-<nav class="navbar bg-white text-dark border-bottom ">
-  <div>
-      <img  th:src="@{/images/logito.png}"  style="width: 120px;" >
-  </div> 
- <a class="btn btn-outline-success my-2 my-sm-0" type="submit" href="/">Home</a>
-
-</nav>
 
 
 <body class="text-center">
 <div class="row">
-<center>
-
-<FONT  SIZE=6 FACE="times new roman"> Error 404 </FONT>
-<br>
-
-<FONT  SIZE=4 FACE="times new roman"> Ocurrio un error con el servidor </FONT> 
-<br>
-      <img th:src="@{/images/403Errorform.png}"    style="width: 750px;">
-
-
-</center>
-
+    <center>
+        <h3 class="mb-3"> Error 403 </h3>
+        <h4 class="mb-3"> Ocurrio un error de permisos </h4>
+        <img th:src="@{/images/403Errorform.png}" style="width: 750px;">
+        <nav>
+            <a class="btn btn-outline-success my-2 my-sm-0" style="height: 50px;width: 100px;" type="submit" href="/logout">Regresar</a>
+        </nav>
+    </center>
 
 </div>
+
 
 
 </body>

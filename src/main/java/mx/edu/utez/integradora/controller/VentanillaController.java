@@ -5,7 +5,6 @@ import mx.edu.utez.integradora.model.HorarioCita;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
 import mx.edu.utez.integradora.service.impl.HorarioCitaServiceImpl;
-import mx.edu.utez.integradora.service.impl.IntervaloServiceImpl;
 import mx.edu.utez.integradora.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,12 +17,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/ventanilla")
@@ -34,8 +40,6 @@ public class VentanillaController {
     private UserServiceImpl userService;
     @Autowired
     private HorarioCitaServiceImpl horarioCitaService;
-    @Autowired
-    private IntervaloServiceImpl intervaloService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -48,7 +52,15 @@ public class VentanillaController {
     }
 
     @PostMapping(path = "/cambiarContra")
-    public String guardarCambios(User user, RedirectAttributes attributes) {
+    public String guardarCambios(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
+        if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
+            for(ObjectError error: result.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+
+            return "ventanilla/homeVentanilla";
+        }
         User userExistente = userService.mostrar(user.getId());
         if (userExistente == null) {
             return "redirect:/ventanilla/home";
@@ -66,14 +78,43 @@ public class VentanillaController {
         }
     }
 
+    @PostMapping(path = "/cambiarInfo")
+    public String cambiarInfo(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
+        if(result.hasErrors()) {
+            List<String> errores = new ArrayList<>();
+            for(ObjectError error: result.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+
+            return "ventanilla/homeVentanilla";
+        }
+        User userExistente = userService.mostrar(user.getId());
+        userExistente.setCorreo(user.getCorreo());
+        userExistente.setNombre(user.getNombre());
+        userExistente.setApellidos(user.getApellidos());
+        if (userExistente == null) {
+            return "redirect:/ventanilla/home";
+        } else {
+            boolean respuestaCambio = userService.crearUser(userExistente);
+            if (respuestaCambio) {
+                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+                return "redirect:/ventanilla/home";
+            } else {
+                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+                return "redirect:/ventanilla/home";
+            }
+        }
+    }
+
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
             logoutHandler.logout(request, null, null);
-            redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
+//			redirectAttributes.addFlashAttribute("msg_success", "¡Sesión cerrada! Hasta luego");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al cerrar la sesión, intenta de nuevo.");
+//			redirectAttributes.addFlashAttribute("msg_error","Ocurrió un error al cerrar la sesión, intenta de nuevo.");
         }
         return "/login";
     }
@@ -105,11 +146,13 @@ public class VentanillaController {
         return "redirect:/ventanilla/consultarCitas";
     }
 
+
     @GetMapping(path = "/consultarHorarios")
     public String consultarHorarios(Model model, RedirectAttributes redirectAttributes, Pageable pageable, Authentication auth) {
-        String username = auth.getName();
-        User usuario = userService.buscarCorreo(username);
-        Long idSesion = usuario.getId();
+        String username=auth.getName();
+        User usuario=userService.buscarCorreo(username);
+        long idSesion=usuario.getId();
+        //Por el momento dejarlo así no sé por que me esta protestando por el id
         model.addAttribute("listHorarios", horarioCitaService.listarTodos());
         return "ventanilla/listHorarios";
     }

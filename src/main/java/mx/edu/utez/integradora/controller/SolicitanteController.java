@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -53,8 +56,6 @@ public class SolicitanteController {
 
 	@GetMapping(path = "/home")
 	public String home(Model model, Authentication authentication, HttpSession session) {
-
-
 		User user= userService.buscarCorreo(authentication.getName());
 		session.setAttribute("user", user);
 		Solicitante solicitante = solicitanteService.buscarporUser(user);
@@ -83,26 +84,23 @@ public class SolicitanteController {
 		model.addAttribute("listaCitas", listaCitas);
 		return "redirect:/solicitante/listCitas";
 	}
-
-	@GetMapping("/listCitas")
-	public String listarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
-		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6, Sort.by("fecha").descending()));
-		model.addAttribute("listaCitas", listaCitas);
-		return "solicitante/listCitas";
-	}
-	@PostMapping(path = "/cambiarContra")
-	public String guardarCambios( User user, RedirectAttributes attributes) {
+	@PostMapping(path = "/cambiarInfo")
+	public String cambiarInfo(@Valid @ModelAttribute("user") User user,Model model, BindingResult result, RedirectAttributes attributes) {
+		if(result.hasErrors()) {
+			List<String> errores = new ArrayList<>();
+			for(ObjectError error: result.getAllErrors()) {
+				errores.add(error.getDefaultMessage());
+			}
+			return "solicitante/homeSolicitante";
+		}
 		User userExistente = userService.mostrar(user.getId());
+		userExistente.setCorreo(user.getCorreo());
+		userExistente.setNombre(user.getNombre());
+		userExistente.setApellidos(user.getApellidos());
 		if (userExistente == null) {
 			return "redirect:/solicitante/home";
 		} else {
-			String contrar = user.getContrasenia();
-			String contraEncrip = passwordEncoder.encode(contrar);
-			boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-			System.out.println(contrar);
-			System.out.println(contraEncrip);
-			System.out.println(userExistente.getCorreo());
-			System.out.println(respuestaCambio);
+			boolean respuestaCambio = userService.crearUser(userExistente);
 			if (respuestaCambio) {
 				attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
 				return "redirect:/solicitante/home";
@@ -113,6 +111,70 @@ public class SolicitanteController {
 		}
 	}
 
+
+	@PostMapping(path = "/cambiarInfo2")
+	public String cambiarInfo2(@Valid @ModelAttribute("solicitante") Solicitante solicitante,Model model, BindingResult result, RedirectAttributes attributes) {
+		if(result.hasErrors()) {
+			List<String> errores = new ArrayList<>();
+			for(ObjectError error: result.getAllErrors()) {
+				errores.add(error.getDefaultMessage());
+			}
+			attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+			return "solicitante/homeSolicitante";
+		}
+		Solicitante soliExistente = solicitanteService.mostrar(solicitante.getId());
+		soliExistente.setCarrera(solicitante.getCarrera());
+		soliExistente.setMatricula(solicitante.getMatricula());
+		soliExistente.setTelefono(solicitante.getTelefono());
+		if (soliExistente == null) {
+			return "redirect:/solicitante/home";
+		} else {
+			boolean respuestaCambio = solicitanteService.crearSolicitante(soliExistente);
+			if (respuestaCambio) {
+				attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+				return "redirect:/solicitante/home";
+			} else {
+				attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+				return "redirect:/solicitante/home";
+			}
+		}
+	}
+	@GetMapping("/listCitas")
+	public String listarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+		Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6, Sort.by("fecha").descending()));
+		model.addAttribute("listaCitas", listaCitas);
+		return "solicitante/listCitas";
+	}
+	@PostMapping(path = "/cambiarContra")
+	public String guardarCambios(@Valid @ModelAttribute("user") User user,Model model, BindingResult result, RedirectAttributes attributes, Authentication authentication, HttpSession session) {
+		if(result.hasErrors()) {
+			List<String> errores = new ArrayList<>();
+			for(ObjectError error: result.getAllErrors()) {
+				errores.add(error.getDefaultMessage());
+			}
+			User user2= userService.buscarCorreo(authentication.getName());
+			session.setAttribute("user", user2);
+			Solicitante solicitante = solicitanteService.buscarporUser(user2);
+			model.addAttribute("user",user2);
+			model.addAttribute("solicitante", solicitante);
+			return "solicitante/HomeSolicitante";
+		}
+		User userExistente = userService.mostrar(user.getId());
+		if (userExistente == null) {
+			return "redirect:/solicitante/home";
+		} else {
+			String contrar = user.getContrasenia();
+			String contraEncrip = passwordEncoder.encode(contrar);
+			boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
+			if (respuestaCambio) {
+				attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+				return "redirect:/solicitante/home";
+			} else {
+				attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
+				return "redirect:/solicitante/home";
+			}
+		}
+	}
 
 	@GetMapping("/agendar1")
 	public String agendar1(Model model) {
