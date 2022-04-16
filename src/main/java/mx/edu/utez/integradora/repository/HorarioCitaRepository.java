@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface HorarioCitaRepository extends JpaRepository<HorarioCita, Long> {
+
+    @Query(value = "SELECT x.fecha FROM HorarioCita x")
+    public abstract List<String> consultarFechas();
 
     @Query(value = "select * from horario_ventanilla order by id_horario_ventanilla desc limit 1", nativeQuery = true)
     HorarioCita consultarUltimo();

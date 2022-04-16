@@ -96,7 +96,7 @@
                         <div class="form-group col">
                             <label>Contraseña<span class="text-danger">(*)</span></label>
                             <input class="form-control form-control-lg" onchange="validarContrasena()"
-                                   type="password" max="10" id="contrasena" name="contrasenia" required
+                                   type="password" max="10" id="contrasena" name="contrasenia"
                                    placeholder="12345" th:field="*{contrasenia}">
 
                         </div>
@@ -104,7 +104,7 @@
                             <label>Confirmar contraseña (*)</label>
                             <input class="form-control form-control-lg" onchange="validarContrasena()"
                                    type="password" max="10" id="confirmarContrasena" name="confirmarContrasena"
-                                   required placeholder="12345">
+                                   placeholder="12345">
                         </div>
                     </div>
                     <div th:if="${#fields.hasErrors('contrasenia')}" th:error="*{contrasenia}" class="alert alert-danger">
@@ -115,7 +115,7 @@
                             <a type="button" th:href="@{/administrador/consultarUsuarios}"
                                class="btn btn-secondary col m-3">Cancelar</a>
                             <button type="submit" class="btn btn-primary col m-3" onclick="validarContrasena()">
-                                Registrar servicio
+                                Registrar usuario
                             </button>
                         </div>
                     </center>

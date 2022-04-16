@@ -42,12 +42,14 @@ public class AdminController {
     private RoleServiceImpl roleService;
     @Autowired
     private SolicitanteServiceImpl solicitanteService;
+    static final String CONSULTARUSUARIOS = "redirect:/administrador/consultarUsuarios";
+    static final String CONSULTARSERVICIOS = "redirect:/administrador/consultarServicios";
 
     @GetMapping(path = "/home")
-    public String home(Model model,Authentication authentication, HttpSession session) {
+    public String home(Model model, Authentication authentication, HttpSession session) {
         User user = userService.buscarCorreo(authentication.getName());
         session.setAttribute("user", user);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "/administrador/adminHome";
     }
 
@@ -70,59 +72,48 @@ public class AdminController {
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "administrador/listUsuarios";
     }
+
     @PostMapping(path = "/cambiarContra")
     public String guardarCambios(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             List<String> errores = new ArrayList<>();
-            for(ObjectError error: result.getAllErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
-
-            return "administrador/adminHome";
         }
         User userExistente = userService.mostrar(user.getId());
-        if (userExistente == null) {
-            return "redirect:/administrador/home";
+        String contrar = user.getContrasenia();
+        String contraEncrip = passwordEncoder.encode(contrar);
+        boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
+        if (respuestaCambio) {
+            attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
         } else {
-            String contrar = user.getContrasenia();
-            String contraEncrip = passwordEncoder.encode(contrar);
-            boolean respuestaCambio = userService.cambiarContrasena(contraEncrip, userExistente.getCorreo());
-            if (respuestaCambio) {
-                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
-                return "redirect:/administrador/home";
-            } else {
-                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
-                return "redirect:/administrador/home";
-            }
+            attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
         }
+            return "redirect:/administrador/home";
     }
 
     @PostMapping(path = "/cambiarInfo")
     public String cambiarInfo(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             List<String> errores = new ArrayList<>();
-            for(ObjectError error: result.getAllErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
-
-            return "administrador/adminHome";
         }
         User userExistente = userService.mostrar(user.getId());
         userExistente.setCorreo(user.getCorreo());
         userExistente.setNombre(user.getNombre());
         userExistente.setApellidos(user.getApellidos());
-        if (userExistente == null) {
-            return "redirect:/administrador/home";
+        boolean respuestaCambio = userService.crearUser(userExistente);
+        if (respuestaCambio) {
+            attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
+
         } else {
-            boolean respuestaCambio = userService.crearUser(userExistente);
-            if (respuestaCambio) {
-                attributes.addFlashAttribute("msg_success", "Se ha actualizado de manera exitosa");
-                return "redirect:/administrador/home";
-            } else {
-                attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
-                return "redirect:/administrador/home";
-            }
+            attributes.addFlashAttribute("msg_error", "Hubo un error al momento de actualizar");
         }
+        return "redirect:/administrador/home";
+
     }
 
     @GetMapping(path = "/consultarServicios")
@@ -152,7 +143,7 @@ public class AdminController {
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "Eliminacion fallida");
         }
-        return "redirect:/administrador/consultarUsuarios";
+        return CONSULTARUSUARIOS;
     }
 
     @GetMapping(path = "/editarUsuario/{id}")
@@ -162,7 +153,7 @@ public class AdminController {
             model.addAttribute("user", user);
             return "administrador/formUsuario";
         }
-        return "redirect:/administrador/consultarUsuarios";
+        return CONSULTARUSUARIOS;
     }
 
     @GetMapping(path = "/mostrarUsuario/{id}")
@@ -172,14 +163,14 @@ public class AdminController {
             model.addAttribute("user", user);
             return "administrador/mostrarServicio";
         }
-        return "redirect:/administrador/consultarServicios";
+        return CONSULTARSERVICIOS;
     }
 
     @PostMapping("/guardarUser")
-    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, @Valid @ModelAttribute("user") User user,BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()) {
+    public String guardarUser(@RequestParam("tipoUsuario") String tipoUsuario, @Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
             List<String> errores = new ArrayList<>();
-            for(ObjectError error: result.getAllErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
         }
@@ -188,38 +179,36 @@ public class AdminController {
             rol = roleService.buscarAuthority("ROLE_ADMIN");
         } else if (tipoUsuario.equals("opcionVentanilla")) {
             rol = roleService.buscarAuthority("ROLE_VENTANILLA");
-        }else{
-            rol= roleService.buscarAuthority("ROLE_USER");
+        } else {
+            rol = roleService.buscarAuthority("ROLE_USER");
         }
         user.agregarRole(rol);
         user.setContrasenia(passwordEncoder.encode(user.getContrasenia()));
         boolean respuesta = userService.crearUser(user);
         if (respuesta) {
             attributes.addFlashAttribute("msg_success", "Registro exitoso");
-            return "redirect:/administrador/consultarUsuarios";
         } else {
             attributes.addFlashAttribute("msg_error", "Registro fallido");
-            return "redirect:/administrador/formUsuario";
         }
+        return CONSULTARUSUARIOS;
     }
 
     @PostMapping(path = "/guardarServicio")
-    public String guadarServicio(@Valid @ModelAttribute("servicio") Servicio servicio,BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()) {
+    public String guadarServicio(@Valid @ModelAttribute("servicio") Servicio servicio, BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
             List<String> errores = new ArrayList<>();
-            for(ObjectError error: result.getAllErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
-            attributes.addFlashAttribute("msg_error", "Registro fallido");
-            return "administrador/formServicio";
         }
         boolean respuesta = servicioService.crearServicio(servicio);
         if (respuesta) {
             attributes.addFlashAttribute("msg_success", "Registro exitoso");
-            return "redirect:/administrador/consultarServicios";
         } else {
-            return "redirect:/administrador/formServicio";
+
+            attributes.addFlashAttribute("msg_error", "Registro fallido");
         }
+        return CONSULTARSERVICIOS;
     }
 
     @PostMapping(path = "/eliminarServicio")
@@ -231,7 +220,7 @@ public class AdminController {
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "Eliminacion fallida");
         }
-        return "redirect:/administrador/consultarServicios";
+        return CONSULTARSERVICIOS;
     }
 
 
@@ -240,9 +229,8 @@ public class AdminController {
         Servicio servicio = servicioService.mostrar(id);
         if (servicio != null) {
             model.addAttribute("servicio", servicio);
-            return "administrador/mostrarServicio";
         }
-        return "redirect:/administrador/consultarServicios";
+        return CONSULTARSERVICIOS;
     }
 
     @GetMapping("/editarServicio/{id}")
@@ -250,9 +238,8 @@ public class AdminController {
         Servicio servicio = servicioService.mostrar(id);
         if (servicio != null) {
             model.addAttribute("servicio", servicio);
-            return "administrador/formServicio";
         }
-        return "redirect:/administrador/consultarServicios";
+        return CONSULTARSERVICIOS;
     }
 
 }

@@ -19,20 +19,14 @@ public class Cita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idcita;
-    private Time hora;
-    private Date fecha;
-    @ManyToOne
-    @JoinColumn(name = "idHorarioVentanilla")
-    private HorarioCita ventanilla;
+    private String hora;
+    private String fecha;
     @ManyToOne
     @JoinColumn(name = "idServicio")
     private Servicio servicio;
-    @ManyToOne
-    @JoinColumn(name = "idAtendio")
-    private User user;
     private String documentoAnexos;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name = "idSolicitante")
-    private Solicitante solicitante;
+    @JoinColumn(name = "idUsuario")
+    private User user;
 }

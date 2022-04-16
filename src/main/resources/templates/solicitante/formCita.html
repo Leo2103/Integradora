@@ -1,10 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Registrar Horario</title>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/menu.css}"/>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}"/>
+
 </head>
 <body>
-$END$
+<div class="container-fluid">
+    <div th:insert="/fragments/headerSolicitante.html "></div>
+    <div class="container">
+        <h2>Confirma tus datos</h2>
+        <form th:action="@{/solicitante/guadarCita}" method="POST" th:object="${cita}">
+            <div class="form-group col">
+                <label>Nombre del tramite</label>
+                <select class="form-control" th:field="*{servicio.id}">
+                    <option th:each="tmpServicio: ${listaServicio}" th:value="${tmpServicio.id}"
+                            th:text="${tmpServicio.nombre}">
+                </select>
+
+                <div class="form-group col">
+                    <label>Fecha seleccionada</label>
+                    <select class="form-control" th:field="*{fecha}">
+                        <option th:each="tmpHorarios: ${listaHorarios}" th:value="${tmpHorarios.fecha}"
+                                th:text="${tmpHorarios.fecha}">
+                    </select>
+                </div>
+                <div class="form-group col">
+                    <label>Hora Seleccionada</label>
+                    <select class="form-control" th:field="*{hora}">
+                        <option th:each="tmpIntervalos: ${listaIntervalos}" th:value="${tmpIntervalos.hora}"
+                                th:text="${tmpIntervalos.hora}">
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-8">
+                        <label>Agrega la documentacion requerida</label>
+                        <input class="form-control form-control-lg" type="file" accept="application/pdf">
+                    </div>
+                    <div class="col-4">
+                        <label style="padding-top: 30px;">Nota: En caso de requerir subir mas de un documento utilizar
+                            la
+                            herramienta
+                            <a href="https://www.ilovepdf.com/es">ilovepdf</a></label>
+                    </div>
+                </div>
+
+            </div>
+
+            <script src="https://www.paypal.com/sdk/js?client-id=ARNU3qRtAXdL15UfenLraVdQficta4QWq60TmmUAGzaJ66ehUwPOy4GYRN67D0CZAg6F0D01ePstMCmU&currency=MXN"></script>
+            <div th:href="@{/solicitante/guadarCita}" style="margin-left: 200px" id="paypal-button-container"></div>
+
+            <script>
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: '77.44'
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(function (orderData) {
+                            window.location.href = "listCitas"
+                        });
+                    }
+                }).render('#paypal-button-container');
+            </script>
+            <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                    crossorigin="anonymous">
+            </script>
+            <button class="btn-warning btn-primary" type="submit">Registrar</button>
+            <a type="button" class="btn btn-outline-secondary"th:href="@{/solicitante/listCitas}"> Cancelar</a>
+        </form>
+
+    </div>
+</div>
 </body>
 </html>

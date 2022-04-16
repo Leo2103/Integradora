@@ -120,7 +120,7 @@ public class VentanillaController {
     }
 
     @GetMapping("/consultarCitas")
-    public String gestionarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+    public String listarCitas(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
         Page<Cita> listaCitas = citaService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 6, Sort.by("fecha").descending()));
         model.addAttribute("listaCitas", listaCitas);
         return "ventanilla/consultarCitas";

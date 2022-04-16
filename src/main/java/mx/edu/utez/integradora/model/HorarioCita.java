@@ -23,9 +23,6 @@ public class HorarioCita implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idHorarioVentanilla;
-
-
-
 	@Column(name = "fecha")
 	private String fecha;
 

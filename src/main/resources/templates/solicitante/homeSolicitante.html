@@ -12,11 +12,10 @@
 <body>
 <div class="container-fluid">
     <div th:insert="/fragments/headerSolicitante.html "></div>
-
     <br>
     <div class="row" style="display: flex">
         <div class="col-1"></div>
-        <div class="col-6" th:each="tmpSolicitante: ${solicitante}">
+        <div class="col-6">
             <div class="card m-3">
                 <div class="card-body">
                     <h2 class="mb-3 mr-2 ml-2 text-muted" th:text="${session.user.getNombre()}"></h2>
@@ -26,11 +25,7 @@
                             <label class="text-muted">Apellidos</label>
                             <h4 class="text-primary" th:text="${session.user.getApellidos()}"></h4>
                         </div>
-                        <div class="form-group col-4">
-                            <label class="text-muted">Telefono:</label>
-                            <h4 class="text-primary" th:text="${solicitante.telefono}"></h4>
-                        </div>
-                        <div class="col-1"></div>
+
                     </div>
                     <div class="form-row">
                         <div class="col-1"></div>
@@ -38,24 +33,9 @@
                             <label class="text-muted">Email:</label>
                             <h4 class="text-primary" th:text="${session.user.getCorreo()}"></h4>
                         </div>
-
                         <div class="form-group col-4">
                             <label class="text-muted">Rol</label>
                             <h4 class="text-primary" th:text="Solicitante"></h4>
-                        </div>
-                        <div class="col-1"></div>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col-1"></div>
-                        <div class="form-group col-6">
-                            <label class="text-muted">Carrera:</label>
-                            <h4 class="text-primary" th:text="${solicitante.carrera}"></h4>
-                        </div>
-
-                        <div class="form-group col-4">
-                            <label class="text-muted">Matricula:</label>
-                            <h4 class="text-primary" th:text="${solicitante.matricula}"></h4>
                         </div>
                         <div class="col-1"></div>
                     </div>
@@ -94,101 +74,6 @@
             </div>
         </div>
     </div>
-    <div class="row" style="display: flex">
-        <div class="col-2"></div>
-        <div class="card col-8">
-            <form class="card-body" th:action="@{/solicitante/cambiarInfo}" method="POST" th:object="${user}">
-                <h2 class="mb-3 text-muted" style="align-content: center">Informacion Personal</h2>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <input hidden th:field="*{id}">
-                        <label>Nombre: (*)</label>
-                        <input class="form-control form-control-lg" type="text" name="nombre"
-                               placeholder="Ingresa el nombre del usuario" max="45" th:field="*{nombre}">
-                    </div>
-                    <div class="form-group col">
-                        <label>Apellido: (*)</label>
-                        <input class="form-control form-control-lg" type="text" name="qpellidos"
-                               placeholder="Ingresa los apellidos del usuario" max="45" th:field="*{apellidos}">
-                    </div>
-                </div>
-                <div th:if="${#fields.hasErrors('nombre')}" th:error="*{nombre}" class="alert alert-danger">
-                    El nombre es requerido y debe tener mas de 2 caracteres, no se aceptan caracteres especiales
-                </div>
-                <div th:if="${#fields.hasErrors('apellidos')}" th:error="*{apellidos}" class="alert alert-danger">
-                    El(los) apellido(s) son requeridos y deben tener mas de 2 caracteres, no se aceptan caracteres especiales
-                </div>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label>Correo Electronico: (*)</label>
-                        <input class="form-control form-control-lg" type="email"
-                               placeholder="Ingresa el correo  electrónico" max="45" name="correo" th:field="*{correo}">
-                        <div th:if="${#fields.hasErrors('correo')}" th:error="*{correo}" class="alert alert-danger">
-                            El correo no debe ser nulo, debe tener minimo 10 caracteres y mantener formato E-mail
-                        </div>
-                    </div>
-                </div>
-                <input hidden th:field="*{id}">
-                <input hidden  name="contrasenia"  th:field="*{contrasenia}">
-                <input hidden  name="enabled"  th:field="*{enabled}">
-                <div class="form-row">
-                    <button type="submit" id="registrar cambios" class="btn btn-muted col m-3">Modificar Información Personal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-
-    <div class="row" style="display: flex">
-        <div class="col-2"></div>
-        <div class="card col-8">
-            <form class="card-body" th:action="@{/solicitante/cambiarInfo2}" method="POST" th:object="${solicitante}">
-                <h2 class="mb-3 text-muted" style="align-content: center">Informacion Institucional</h2>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label>Carrera</label>
-                        <select class="form-control form-control-lg"
-                                placeholder="Ingresa tu carrera" required name="carrera" th:field="*{carrera}">
-                            <option value="Desarrollo de software">Desarrollo de software</option>
-                            <option value="Diseño digital">Diseño digital</option>
-                            <option value="Interconexion de redes">Interconexion de redes</option>
-                            <option value="Diseño de modas">Diseño de modas</option>
-                            <option value="Mantenimiento Industrial">Mantenimiento Industrial</option>
-                        </select>
-                    </div>
-                    <div class="form-group col">
-                        <label>Matricula</label>
-                        <input class="form-control form-control-lg" type="text"
-                               placeholder="Ingresa tu matricula" required name="matricula" th:field="*{matricula}">
-                    </div>
-                </div>
-                <div th:if="${#fields.hasErrors('carrera')}" th:error="*{carrera}" class="alert alert-danger">
-                    La carrera es requerida, por favor selecciona una opción
-                </div>
-                <div th:if="${#fields.hasErrors('matricula')}" th:error="*{matricula}" class="alert alert-danger">
-                    La matricula es obligatoria y debe tener mas de 5 caracteres, no se aceptan caracteres especiales
-                </div>
-                <div clas="form-row">
-                    <div class="form-group col">
-                        <label>Telefono<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg phone-mask" minlength="10"
-                               maxlength="14" placeholder="( ___ ) - ___ - __ - __" required name="telefono" th:field="*{telefono}">
-                    </div>
-                </div>
-                <div th:if="${#fields.hasErrors('telefono')}" th:error="*{telefono}" class="alert alert-danger">
-                    El telefono es requerido, (solo numeros) minimo 10, maximo 14
-                </div>
-                <input hidden th:field="*{id}">
-                <input hidden th:field="*{usuario}">
-                <div class="form-row">
-                    <button type="submit" id="registrar cambios" class="btn btn-muted col m-3">Modificar Información Institucional</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
 </div>
 
 <!--Toast-->
