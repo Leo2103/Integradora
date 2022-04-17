@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `integradora` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `integradora`;
+-- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
--- Host: localhost    Database: integradora
+-- Host: 127.0.0.1    Database: integradora
 -- ------------------------------------------------------
--- Server version	8.0.23
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +16,30 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `binnacle`
+--
+
+DROP TABLE IF EXISTS `binnacle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `binnacle` (
+  `activity` varchar(200) NOT NULL,
+  `dateActivity` datetime DEFAULT CURRENT_TIMESTAMP,
+  `tableActivity` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `binnacle`
+--
+
+LOCK TABLES `binnacle` WRITE;
+/*!40000 ALTER TABLE `binnacle` DISABLE KEYS */;
+INSERT INTO `binnacle` VALUES ('Se eliminó un servicio:  asadasd con id: 10','2022-04-17 00:52:26','servicio'),('Se eliminó un servicio:  sasasa con id: 11','2022-04-17 00:52:26','servicio');
+/*!40000 ALTER TABLE `binnacle` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `cita`
@@ -32,16 +58,20 @@ CREATE TABLE `cita` (
   `id_solicitante` bigint DEFAULT NULL,
   `id_atendio` bigint DEFAULT NULL,
   `id_horario_ventanilla` bigint DEFAULT NULL,
+  `id_usuario` bigint DEFAULT NULL,
+  `id` bigint NOT NULL,
   PRIMARY KEY (`idcita`),
   KEY `FK68785k2hlh38mhiq3u2ny82p4` (`id_servicio`),
   KEY `FKqu5j0sc4cq8mo2w201tyhce2s` (`id_solicitante`),
   KEY `FKahnnem2na7peuhuwy3aohv1c2` (`id_atendio`),
   KEY `FKkg6r3t7mwhhb269873n7o4ew8` (`id_horario_ventanilla`),
+  KEY `FKeg9rfkmxnd08k80u9ugdag3wn` (`id_usuario`),
   CONSTRAINT `FK68785k2hlh38mhiq3u2ny82p4` FOREIGN KEY (`id_servicio`) REFERENCES `servicio` (`id`),
   CONSTRAINT `FKahnnem2na7peuhuwy3aohv1c2` FOREIGN KEY (`id_atendio`) REFERENCES `users` (`id`),
+  CONSTRAINT `FKeg9rfkmxnd08k80u9ugdag3wn` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKkg6r3t7mwhhb269873n7o4ew8` FOREIGN KEY (`id_horario_ventanilla`) REFERENCES `horario_ventanilla` (`id_horario_ventanilla`),
   CONSTRAINT `FKqu5j0sc4cq8mo2w201tyhce2s` FOREIGN KEY (`id_solicitante`) REFERENCES `solicitante` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,6 +82,23 @@ LOCK TABLES `cita` WRITE;
 /*!40000 ALTER TABLE `cita` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cita` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_insert_cita` AFTER INSERT ON `cita` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se registró una cita nueva con id: ', NEW.idcita),now(),"cita");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `horario_ventanilla`
@@ -69,8 +116,8 @@ CREATE TABLE `horario_ventanilla` (
   `usuario` bigint DEFAULT NULL,
   PRIMARY KEY (`id_horario_ventanilla`),
   KEY `FK3t4t8okj11nbocdftcfku756d` (`usuario`),
-  CONSTRAINT `FK3t4t8okj11nbocdftcfku756d` FOREIGN KEY (`usuario`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK3t4t8okj11nbocdftcfku756d` FOREIGN KEY (`usuario`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,9 +126,42 @@ CREATE TABLE `horario_ventanilla` (
 
 LOCK TABLES `horario_ventanilla` WRITE;
 /*!40000 ALTER TABLE `horario_ventanilla` DISABLE KEYS */;
-INSERT INTO `horario_ventanilla` VALUES (1,'2022-04-21','15:05:00','13:05:00',8,2),(2,'2022-05-05','15:05:00','13:05:00',8,2),(3,'2022-05-12','15:05:00','13:05:00',8,2),(4,'2022-04-29','15:15:00','13:15:00',3,2),(5,'2022-05-13','15:15:00','13:15:00',3,2),(6,'2022-05-09','16:16:00','23:16:00',952,2),(7,'2022-05-23','16:16:00','23:16:00',952,2),(8,'2022-05-30','16:16:00','23:16:00',952,2);
 /*!40000 ALTER TABLE `horario_ventanilla` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_insert_horario` AFTER INSERT ON `horario_ventanilla` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se registró un horario nuevo con id: ', NEW.id_horario_ventanilla),now(),"horario_ventanilla");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_delete_horario` AFTER DELETE ON `horario_ventanilla` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se eliminó un servicio con id: ', OLD.id_horario_ventanilla),now(),"horario_ventanilla");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `intervalo`
@@ -97,8 +177,8 @@ CREATE TABLE `intervalo` (
   `horario_cita` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK1sgvv6ywchvllinispbnfehyi` (`horario_cita`),
-  CONSTRAINT `FK1sgvv6ywchvllinispbnfehyi` FOREIGN KEY (`horario_cita`) REFERENCES `horario_ventanilla` (`id_horario_ventanilla`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK1sgvv6ywchvllinispbnfehyi` FOREIGN KEY (`horario_cita`) REFERENCES `horario_ventanilla` (`id_horario_ventanilla`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +187,6 @@ CREATE TABLE `intervalo` (
 
 LOCK TABLES `intervalo` WRITE;
 /*!40000 ALTER TABLE `intervalo` DISABLE KEYS */;
-INSERT INTO `intervalo` VALUES (1,_binary '','13:05:00',1),(2,_binary '','13:35:00',1),(3,_binary '','14:05:00',1),(4,_binary '','14:35:00',1),(5,_binary '','15:05:00',1),(6,_binary '','13:05:00',2),(7,_binary '','13:35:00',2),(8,_binary '','14:05:00',2),(9,_binary '','14:35:00',2),(10,_binary '','15:05:00',2),(11,_binary '','13:05:00',3),(12,_binary '','13:35:00',3),(13,_binary '','14:05:00',3),(14,_binary '','14:35:00',3),(15,_binary '','15:05:00',3),(16,_binary '','13:15:00',4),(17,_binary '','13:45:00',4),(18,_binary '','14:15:00',4),(19,_binary '','14:45:00',4),(20,_binary '','15:15:00',4),(21,_binary '','13:15:00',5),(22,_binary '','13:45:00',5),(23,_binary '','14:15:00',5),(24,_binary '','14:45:00',5),(25,_binary '','15:15:00',5),(26,_binary '','23:16:00',6),(27,_binary '','23:16:00',7),(28,_binary '','23:16:00',8);
 /*!40000 ALTER TABLE `intervalo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +229,7 @@ CREATE TABLE `servicio` (
   `documentos_requeridos` varchar(255) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,6 +240,57 @@ LOCK TABLES `servicio` WRITE;
 /*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_insert_service` AFTER INSERT ON `servicio` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se registró un servicio nuevo: ', NEW.nombre,' con id: ', NEW.id),now(),"servicio");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_update_service` AFTER UPDATE ON `servicio` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se modificó el servicio ', OLD.id, ' con nombre  ', OLD.nombre," con un costo de ",OLD.costo," y la descripcion ",OLD.descripcion," a nombre: ",NEW.nombre," costo: ",NEW.costo," descripcion: ",NEW.descripcion),now(),"servicio");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_delete_service` AFTER DELETE ON `servicio` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se eliminó un servicio:  ', OLD.nombre,' con id: ', OLD.id),now(),"servicio");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `solicitante`
@@ -177,8 +307,8 @@ CREATE TABLE `solicitante` (
   `id_usuario` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK3ccp22n8ad4duh5ftk5bxkdkg` (`id_usuario`),
-  CONSTRAINT `FK3ccp22n8ad4duh5ftk5bxkdkg` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK3ccp22n8ad4duh5ftk5bxkdkg` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,8 +332,8 @@ CREATE TABLE `user_role` (
   `role_id` bigint NOT NULL,
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `FKa68196081fvovjhkek5m97n3y` (`role_id`),
-  CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
-  CONSTRAINT `FKj345gk1bovqvfame88rcx7yyx` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKj345gk1bovqvfame88rcx7yyx` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -233,7 +363,7 @@ CREATE TABLE `users` (
   `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_qs4hlsdf7l1k1u4on057c0949` (`correo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,9 +372,60 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Vazquez','$2a$10$rXmqb0WMsiv0op8C0FRALu/gWgAZHEM6FOc3pO3jatidJmXREiyMy','admin@gmail.com',_binary '','Leo'),(2,'Cortez','$2a$10$CY5A6poEx.8B/PgFGYdDDOKJ0720WPFz5HicWfz6aGmeMstkf2V4a','ventanilla@gmail.com',_binary '','Abraham'),(3,'Herrera','$2a$10$LE67yMIgwmnWNSsawVrfwufCE0xjXXUhmviiF3EcPQzFKTRlOgc3a','user@gmail.com',_binary '','Romario');
+INSERT INTO `users` VALUES (1,'Vazquez','$2a$10$jBwQ3SpcM8f/40LGMmQeLudx2TzPHrbm5/cJVbHhCBUXHM5wQSXh6','admin@gmail.com',_binary '','Leo'),(2,'Cortes','$2a$10$iu5ng8agEWwhfbFveBdUfu3DUGkXtJ1z6P0JGwN/SPghMslrfwIzG','ventanilla@gmail.com',_binary '','Rashid'),(3,'Herrera','$2a$10$nFy.PsCn5DeV0PYOQmg1euebEgDVU64848abq6ZwjN0ngGRG35bCm','user@gmail.com',_binary '','Romario');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_insert_users` AFTER INSERT ON `users` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se registró un usuario nuevo: ', NEW.nombre,' con id: ', NEW.id),now(),"users");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_update_users` AFTER UPDATE ON `users` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se modificó el usuario ', OLD.id, ' con nombre  ', OLD.nombre," con apellidos ",OLD.apellidos," y correo ",OLD.correo," a nombre: ",NEW.nombre," apellidos: ",NEW.apellidos," correo: ",NEW.correo),now(),"users");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_after_delete_users` AFTER DELETE ON `users` FOR EACH ROW BEGIN 
+		INSERt INTO binnacle(activity,dateActivity,tableActivity) values (CONCAT('Se eliminó un usuario:  ', OLD.nombre,' con id: ', OLD.id),now(),"users");
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Dumping routines for database 'integradora'
@@ -350,4 +531,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-15 13:30:32
+-- Dump completed on 2022-04-17  0:55:10

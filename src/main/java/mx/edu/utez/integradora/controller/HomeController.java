@@ -37,7 +37,6 @@ public class HomeController {
         return "home";
     }
 
-    //este lo veo mas a nivel de home es decir mover la vista a un nivel general
     @GetMapping(path = "/registrar")
     public String registrarSolicitante(User user) {
         return "formSolicitante";

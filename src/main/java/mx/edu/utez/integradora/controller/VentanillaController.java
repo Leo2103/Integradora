@@ -2,6 +2,7 @@ package mx.edu.utez.integradora.controller;
 
 import mx.edu.utez.integradora.model.Cita;
 import mx.edu.utez.integradora.model.HorarioCita;
+import mx.edu.utez.integradora.model.Servicio;
 import mx.edu.utez.integradora.model.User;
 import mx.edu.utez.integradora.service.impl.CitaServiceImpl;
 import mx.edu.utez.integradora.service.impl.HorarioCitaServiceImpl;
@@ -152,7 +153,6 @@ public class VentanillaController {
         String username=auth.getName();
         User usuario=userService.buscarCorreo(username);
         long idSesion=usuario.getId();
-        //Por el momento dejarlo así no sé por que me esta protestando por el id
         model.addAttribute("listHorarios", horarioCitaService.listarTodos());
         return "ventanilla/listHorarios";
     }

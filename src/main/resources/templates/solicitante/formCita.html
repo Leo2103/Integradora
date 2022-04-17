@@ -17,6 +17,7 @@
         <h2>Confirma tus datos</h2>
         <form th:action="@{/solicitante/guadarCita}" method="POST" th:object="${cita}">
             <div class="form-group col">
+                <input hidden th:field="*{id}">
                 <label>Nombre del tramite</label>
                 <select class="form-control" th:field="*{servicio.id}">
                     <option th:each="tmpServicio: ${listaServicio}" th:value="${tmpServicio.id}"

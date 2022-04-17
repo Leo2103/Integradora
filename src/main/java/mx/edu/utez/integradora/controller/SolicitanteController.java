@@ -193,7 +193,7 @@ public class SolicitanteController {
 
         User userExist = userService.buscarCorreo(authentication.getName());
         cita.setUser(userService.mostrar(userExist.getId()));
-        cita.setEstatus("Activo");
+        cita.setEstatus("agendada");
 
         boolean res = citaService.crearCita(cita);
         if (res) {
