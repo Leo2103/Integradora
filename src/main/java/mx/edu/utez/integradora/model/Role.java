@@ -1,18 +1,11 @@
 package mx.edu.utez.integradora.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Table(name = "role")
 public class Role implements Serializable {
     @Id
@@ -20,6 +13,13 @@ public class Role implements Serializable {
     private long id;
     @Column(nullable = false, length = 45, unique = true)
     private String authority;
+
+    public Role() {
+    }
+
+    public Role(String authority) {
+        this.authority = authority;
+    }
 
     public long getId() {
         return id;

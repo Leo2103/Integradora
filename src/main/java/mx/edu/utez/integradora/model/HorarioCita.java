@@ -1,10 +1,7 @@
 package mx.edu.utez.integradora.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -14,10 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Table(name = "horarioVentanilla")
 public class HorarioCita implements Serializable {
 	@Id
@@ -50,5 +44,73 @@ public class HorarioCita implements Serializable {
 				+ horaInicio + ", horaFin=" + horaFin + ", numVentanilla="
 				+ numVentanilla + "]";
 	}
-   
+
+
+	public HorarioCita() {
+	}
+
+	public HorarioCita(String fecha, String horaInicio, String horaFin, @Min(value = 1, message = "El numero de ventanilla debe ser mínimo 1") @Max(value = 20, message = "El numero de ventanilla debe ser maximo 20") int numVentanilla, User usuario, Set<Intervalo> intervalo) {
+		this.fecha = fecha;
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
+		this.numVentanilla = numVentanilla;
+		this.usuario = usuario;
+		this.intervalo = intervalo;
+	}
+
+	public long getIdHorarioVentanilla() {
+		return idHorarioVentanilla;
+	}
+
+	public void setIdHorarioVentanilla(long idHorarioVentanilla) {
+		this.idHorarioVentanilla = idHorarioVentanilla;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
+	public String getHoraInicio() {
+		return horaInicio;
+	}
+
+	public void setHoraInicio(String horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
+	public String getHoraFin() {
+		return horaFin;
+	}
+
+	public void setHoraFin(String horaFin) {
+		this.horaFin = horaFin;
+	}
+
+	public int getNumVentanilla() {
+		return numVentanilla;
+	}
+
+	public void setNumVentanilla(int numVentanilla) {
+		this.numVentanilla = numVentanilla;
+	}
+
+	public User getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
+	}
+
+	public Set<Intervalo> getIntervalo() {
+		return intervalo;
+	}
+
+	public void setIntervalo(Set<Intervalo> intervalo) {
+		this.intervalo = intervalo;
+	}
 }
